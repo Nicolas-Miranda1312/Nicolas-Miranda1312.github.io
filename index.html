@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tu Nombre — Portafolio</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <span class="nav-logo">TN<span class="dot">.</span></span>
+    <ul class="nav-links">
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-tag">Disponible para proyectos</div>
+    <h1 class="hero-title">
+      Hola, soy<br />
+      <em>Tu Nombre</em>
+    </h1>
+    <p class="hero-sub">Desarrollador / Diseñador — construyo experiencias digitales que importan.</p>
+    <div class="hero-cta">
+      <a href="#proyectos" class="btn btn-primary">Ver proyectos</a>
+      <a href="#contacto" class="btn btn-ghost">Escribirme</a>
+    </div>
+    <div class="hero-scroll">scroll ↓</div>
+  </header>
+
+  <!-- PROYECTOS -->
+  <section class="section" id="proyectos">
+    <div class="section-label">01 — Proyectos</div>
+    <h2 class="section-title">Trabajo seleccionado</h2>
+
+    <div class="projects-grid">
+
+      <!-- TARJETA PROYECTO 1 -->
+      <a href="projects/proyecto-01/index.html" class="project-card">
+        <div class="project-img-wrap">
+          <img src="projects/proyecto-01/assets/cover.png" alt="Proyecto 01" onerror="this.style.display='none'" />
+          <div class="project-img-placeholder">P1</div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <span class="tag">Web</span>
+            <span class="tag">2024</span>
+          </div>
+          <h3 class="project-name">Nombre del Proyecto 01</h3>
+          <p class="project-desc">Breve descripción del proyecto: qué problema resuelve, qué tecnologías usa.</p>
+          <span class="project-link">Ver proyecto →</span>
+        </div>
+      </a>
+
+      <!-- TARJETA PROYECTO 2 -->
+      <a href="projects/proyecto-02/index.html" class="project-card">
+        <div class="project-img-wrap">
+          <img src="projects/proyecto-02/assets/cover.png" alt="Proyecto 02" onerror="this.style.display='none'" />
+          <div class="project-img-placeholder">P2</div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <span class="tag">App</span>
+            <span class="tag">2025</span>
+          </div>
+          <h3 class="project-name">Nombre del Proyecto 02</h3>
+          <p class="project-desc">Breve descripción del proyecto: qué problema resuelve, qué tecnologías usa.</p>
+          <span class="project-link">Ver proyecto →</span>
+        </div>
+      </a>
+
+      <!-- TARJETA "PRÓXIMAMENTE" -->
+      <div class="project-card project-card--coming">
+        <div class="coming-inner">
+          <span class="coming-label">En construcción</span>
+          <p>Próximo proyecto en camino…</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SOBRE MÍ -->
+  <section class="section section--alt" id="sobre-mi">
+    <div class="section-label">02 — Sobre mí</div>
+    <div class="about-grid">
+      <div>
+        <h2 class="section-title">Quién soy</h2>
+        <p>Cuéntate a ti mismo/a en 2–3 oraciones. Qué te apasiona, cuál es tu especialidad y qué tipo de proyectos buscas.</p>
+        <p>Puedes mencionar tu stack, años de experiencia o lo que te diferencia.</p>
+        <div class="skills-row">
+          <span class="skill">HTML/CSS</span>
+          <span class="skill">JavaScript</span>
+          <span class="skill">Python</span>
+          <span class="skill">React</span>
+          <span class="skill">Figma</span>
+          <!-- Agrega o quita los que uses -->
+        </div>
+      </div>
+      <div class="about-img-wrap">
+        <div class="about-img-placeholder">📸</div>
+        <!-- Reemplaza con: <img src="assets/images/foto.jpg" alt="Tu nombre" /> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section" id="contacto">
+    <div class="section-label">03 — Contacto</div>
+    <h2 class="section-title">Trabajemos juntos</h2>
+    <p class="contact-sub">¿Tienes un proyecto en mente? Escríbeme y hablamos.</p>
+    <div class="contact-links">
+      <a href="mailto:tu@email.com" class="btn btn-primary">tu@email.com</a>
+      <a href="https://github.com/tu-usuario" target="_blank" class="btn btn-ghost">GitHub</a>
+      <a href="https://linkedin.com/in/tu-usuario" target="_blank" class="btn btn-ghost">LinkedIn</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>© 2025 Tu Nombre</span>
+    <span>Hecho con ♥ y GitHub Pages</span>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
