@@ -1,291 +1,98 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portafolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Syne+Mono&display=swap" rel="stylesheet" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+# Portafolio Personal — Listo para GitHub Pages
 
-    body {
-      background: #E9E5DE;
-      overflow: hidden;
-      height: 100svh;
-      width: 100vw;
-    }
+## Estructura
+```
+portafolio/
+├── index.html              ← Home (animación dot wave)
+├── trabajos/
+│   └── index.html          ← Carrusel de arco con 15 proyectos
+├── sobre-mi/
+│   └── index.html          ← Perfil, skills, experiencia y contacto
+├── projects/
+│   ├── _template/          ← Plantilla base para nuevos proyectos
+│   │   └── index.html
+│   ├── proyecto-01/
+│   │   ├── index.html      ← Página individual del proyecto
+│   │   └── assets/         ← Imágenes del proyecto
+│   ├── proyecto-02/ ...
+│   └── proyecto-15/
+└── README.md
+```
 
-    /* Canvas ocupa todo */
-    canvas {
-      display: block;
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-    }
+---
 
-    /* Capa de UI sobre la animación */
-    .ui {
-      position: fixed;
-      inset: 0;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      pointer-events: none;
-    }
+## 🚀 Publicar en GitHub Pages
 
-    /* Nombre — esquina superior izquierda */
-    .ui-name {
-      padding: 2.5rem 3rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: .7rem;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: rgba(17,16,14,.35);
-      opacity: 0;
-      animation: fadeUp .9s .4s ease forwards;
-    }
+1. Crea un repositorio en GitHub (puede ser público o privado con plan Pro)
+2. Sube todos los archivos a la rama `main`
+3. Ve a **Settings → Pages → Source: Deploy from branch → main → / (root)**
+4. Tu portafolio quedará disponible en:
+   `https://tu-usuario.github.io/nombre-del-repo/`
 
-    /* Año — esquina superior derecha */
-    .ui-year {
-      position: fixed;
-      top: 2.5rem;
-      right: 3rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: .65rem;
-      letter-spacing: .25em;
-      color: rgba(17,16,14,.25);
-      opacity: 0;
-      animation: fadeUp .9s .6s ease forwards;
-      pointer-events: none;
-    }
+> **Tip:** Si el repositorio se llama exactamente `tu-usuario.github.io`, quedará en la raíz sin subcarpeta.
 
-    /* Navegación — parte inferior */
-    .ui-nav {
-      padding: 2.5rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      pointer-events: auto;
-    }
+---
 
-    .nav-link {
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-      opacity: 0;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .nav-link:nth-child(1) {
-      animation: fadeUp .8s .9s ease forwards;
-      align-items: flex-start;
-    }
-    .nav-link:nth-child(2) {
-      animation: fadeUp .8s 1.05s ease forwards;
-      align-items: flex-end;
-    }
+## ✏️ Personalizar el contenido
 
-    .nav-label {
-      font-family: 'Syne Mono', monospace;
-      font-size: .6rem;
-      letter-spacing: .25em;
-      text-transform: uppercase;
-      color: rgba(17,16,14,.35);
-      transition: color .3s;
-    }
-    .nav-link:hover .nav-label { color: rgba(17,16,14,.7); }
+### Home (`index.html`)
+- Cambia `"Portafolio"` por tu nombre o siglas
+- Ajusta el texto de los dos botones si lo necesitas
 
-    .nav-title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(2rem, 5vw, 4rem);
-      line-height: 1;
-      color: rgba(17,16,14,.85);
-      letter-spacing: -.01em;
-      position: relative;
-      transition: color .3s;
-    }
+### Trabajos (`trabajos/index.html`)
+- Edita el array `PROJECTS` al inicio del script
+- Cada proyecto tiene: `num`, `name`, `year`, `tags`, `tools`, `palette`, `style`, `desc`, `process`
+- Para agregar un proyecto nuevo, añade un objeto al array — el arco se recalcula solo
 
-    .nav-title::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: rgba(17,16,14,.4);
-      transition: width .4s ease;
-    }
-    .nav-link:nth-child(2) .nav-title::after {
-      left: auto;
-      right: 0;
-    }
-    .nav-link:hover .nav-title::after { width: 100%; }
-    .nav-link:hover .nav-title { color: #111; }
+### Sobre mí (`sobre-mi/index.html`)
+- Reemplaza los textos de presentación, skills y experiencia
+- Descomenta la línea `<img>` dentro de `.about-photo` y apunta a tu foto
+- Cambia el email, GitHub y LinkedIn en la sección `#contacto`
 
-    .nav-arrow {
-      font-family: 'Syne Mono', monospace;
-      font-size: .85rem;
-      color: rgba(17,16,14,.3);
-      transition: color .3s, transform .3s;
-      display: block;
-    }
-    .nav-link:hover .nav-arrow {
-      color: rgba(17,16,14,.65);
-      transform: translateX(5px);
-    }
-    .nav-link:nth-child(2):hover .nav-arrow {
-      transform: translateX(-5px);
-    }
+### Páginas de proyecto (`projects/proyecto-XX/index.html`)
+- Reemplaza el emoji en `.hero` por `<img src="assets/cover.jpg" alt="...">`
+- Edita el título, descripción, proceso, galería y herramientas
+- Añade imágenes reales en la carpeta `assets/` de cada proyecto
 
-    /* Punto decorativo central */
-    .ui-center {
-      position: fixed;
-      bottom: 50%;
-      left: 50%;
-      transform: translate(-50%, 50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: .6rem;
-      opacity: 0;
-      animation: fadeUp .8s 1.3s ease forwards;
-      pointer-events: none;
-    }
-    .center-dot {
-      width: 3px; height: 3px;
-      border-radius: 50%;
-      background: rgba(17,16,14,.2);
-    }
-    .center-line {
-      width: 1px;
-      height: 36px;
-      background: linear-gradient(to bottom, transparent, rgba(17,16,14,.15), transparent);
-    }
+---
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+## ➕ Agregar un nuevo proyecto
 
-    @media (max-width: 600px) {
-      .ui-name  { padding: 1.5rem; font-size: .6rem; }
-      .ui-year  { top: 1.5rem; right: 1.5rem; }
-      .ui-nav   { padding: 1.5rem 1.75rem; }
-      .nav-title{ font-size: clamp(1.8rem, 9vw, 2.8rem); }
-    }
-  </style>
-</head>
-<body>
+1. Duplica la carpeta `projects/_template/` y renómbrala `proyecto-16` (o el nombre que prefieras)
+2. Edita su `index.html`
+3. En `trabajos/index.html`, añade un objeto al array `PROJECTS`:
 
-  <!-- UI OVERLAY -->
-  <div class="ui">
-    <span class="ui-name">Portafolio</span>
+```js
+{
+  num:'16',
+  name:'Nombre del Proyecto',
+  year:'2025',
+  tags:['Categoría','Material'],
+  tools:['Herramienta 1','Herramienta 2'],
+  palette:['#COLOR1','#COLOR2','#COLOR3','#COLOR4'],
+  style:'mesh', // mesh | dots | grid | lines
+  desc:'Descripción breve del proyecto.',
+  process:[
+    {t:'Fase 1', d:'Descripción de la fase.'},
+    {t:'Fase 2', d:'Descripción de la fase.'},
+    {t:'Fase 3', d:'Descripción de la fase.'},
+    {t:'Resultado', d:'Descripción del resultado.'},
+  ]
+}
+```
 
-    <nav class="ui-nav">
-      <a href="trabajos/index.html" class="nav-link">
-        <span class="nav-label">01</span>
-        <span class="nav-title">Trabajos</span>
-        <span class="nav-arrow">→</span>
-      </a>
+---
 
-      <a href="sobre-mi/index.html" class="nav-link">
-        <span class="nav-label">02</span>
-        <span class="nav-title">Sobre mí</span>
-        <span class="nav-arrow">←</span>
-      </a>
-    </nav>
-  </div>
+## 🎨 Ajustar el carrusel de arco
 
-  <div class="ui-center">
-    <div class="center-line"></div>
-    <div class="center-dot"></div>
-    <div class="center-line"></div>
-  </div>
+Estos tres valores en `trabajos/index.html` controlan la geometría:
 
-  <span class="ui-year">© 2025</span>
+| Variable | Valor actual | Efecto |
+|---|---|---|
+| `bottom` en `#arc-wrap` | `80px` | Altura del pivot — más alto = tarjetas más arriba |
+| `ARC_RADIUS` | `300px` | Radio del arco — más pequeño = tarjetas más juntas |
+| `ARC_HALF` | `±150°` | Arco visible — más grande = más tarjetas visibles |
 
-  <!-- ANIMACIÓN DOT WAVE -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-  <script>
-    let cols, rows;
-    const SPACING = 20;
-    let t = 0;
-    let mx, my;
+---
 
-    function setup() {
-      createCanvas(windowWidth, windowHeight);
-      noStroke();
-      mx = width / 2;
-      my = height / 2;
-      cols = floor(width / SPACING) + 2;
-      rows = floor(height / SPACING) + 2;
-    }
-
-    function draw() {
-      background(233, 229, 222); // #E9E5DE — mismo fondo que Trabajos
-      t += 0.016;
-
-      mx = lerp(mx, mouseX, 0.08);
-      my = lerp(my, mouseY, 0.08);
-
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          let x = i * SPACING;
-          let y = j * SPACING;
-
-          let dx = x - mx;
-          let dy = y - my;
-          let d = sqrt(dx * dx + dy * dy);
-
-          let wave = sin(x * 0.022 + t * 1.1) * 18
-                   + cos(y * 0.022 - t * 0.85) * 18
-                   + sin((x - y) * 0.015 + t * 0.6) * 10;
-
-          let influence = constrain(1 - d / 180, 0, 1);
-          influence = influence * influence;
-          let angle = atan2(dy, dx);
-          let push = influence * 35;
-
-          let px = x + cos(angle) * push;
-          let py = y + wave * 0.7 + sin(angle) * push;
-
-          let waveNorm = map(sin(x * 0.022 + t * 1.1 + j * 0.3), -1, 1, 0, 1);
-          // oscuridad base: de gris medio (160) a casi negro (30)
-          let baseDark = map(waveNorm, 0, 1, 160, 30);
-          // cursor lo oscurece más
-          let cursorDark = influence * 30;
-          let dark = max(baseDark - cursorDark, 10);
-
-          let sz = map(influence, 0, 1, 1.5, 5.5);
-
-          // halo sutil cerca del cursor
-          if (influence > 0.05) {
-            fill(dark, dark, dark, influence * 25);
-            ellipse(px, py, sz * 3.5, sz * 3.5);
-          }
-
-          // punto principal gris oscuro / negro
-          fill(dark, dark, dark, map(waveNorm, 0, 1, 80, 200));
-          ellipse(px, py, sz, sz);
-
-          // núcleo negro puro cerca del cursor
-          if (influence > 0.4) {
-            fill(10, 10, 10, 255);
-            ellipse(px, py, sz * 0.45, sz * 0.45);
-          }
-        }
-      }
-    }
-
-    function windowResized() {
-      resizeCanvas(windowWidth, windowHeight);
-      cols = floor(width / SPACING) + 2;
-      rows = floor(height / SPACING) + 2;
-    }
-  </script>
-
-</body>
-</html>
+© 2025 — Portafolio de Diseño Industrial
