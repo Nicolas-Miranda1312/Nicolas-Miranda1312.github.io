@@ -1,46 +1,291 @@
-# Portafolio Personal — Estructura v2
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portafolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-## Páginas
-- `/index.html` → **Home** con animación de constelación + dos botones de navegación
-- `/trabajos/index.html` → **Trabajos** con grilla filtrable de proyectos
-- `/sobre-mi/index.html` → **Sobre mí** con skills, experiencia y contacto
+    body {
+      background: #E9E5DE;
+      overflow: hidden;
+      height: 100svh;
+      width: 100vw;
+    }
 
-## Agregar un nuevo proyecto
+    /* Canvas ocupa todo */
+    canvas {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
 
-1. Duplica la carpeta `projects/proyecto-01/` con el nuevo nombre.
-2. Edita su `index.html`.
-3. En `trabajos/index.html`, añade dentro de `#projects-grid`:
+    /* Capa de UI sobre la animación */
+    .ui {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
 
-```html
-<a href="../projects/mi-proyecto/index.html" class="work-card large" data-cat="web">
-  <div class="card-img">
-    <img src="../projects/mi-proyecto/assets/cover.jpg" alt="Mi proyecto" />
-    <span class="card-num">05</span>
+    /* Nombre — esquina superior izquierda */
+    .ui-name {
+      padding: 2.5rem 3rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(17,16,14,.35);
+      opacity: 0;
+      animation: fadeUp .9s .4s ease forwards;
+    }
+
+    /* Año — esquina superior derecha */
+    .ui-year {
+      position: fixed;
+      top: 2.5rem;
+      right: 3rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .25em;
+      color: rgba(17,16,14,.25);
+      opacity: 0;
+      animation: fadeUp .9s .6s ease forwards;
+      pointer-events: none;
+    }
+
+    /* Navegación — parte inferior */
+    .ui-nav {
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: auto;
+    }
+
+    .nav-link {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      opacity: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-link:nth-child(1) {
+      animation: fadeUp .8s .9s ease forwards;
+      align-items: flex-start;
+    }
+    .nav-link:nth-child(2) {
+      animation: fadeUp .8s 1.05s ease forwards;
+      align-items: flex-end;
+    }
+
+    .nav-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(17,16,14,.35);
+      transition: color .3s;
+    }
+    .nav-link:hover .nav-label { color: rgba(17,16,14,.7); }
+
+    .nav-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1;
+      color: rgba(17,16,14,.85);
+      letter-spacing: -.01em;
+      position: relative;
+      transition: color .3s;
+    }
+
+    .nav-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: rgba(17,16,14,.4);
+      transition: width .4s ease;
+    }
+    .nav-link:nth-child(2) .nav-title::after {
+      left: auto;
+      right: 0;
+    }
+    .nav-link:hover .nav-title::after { width: 100%; }
+    .nav-link:hover .nav-title { color: #111; }
+
+    .nav-arrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: .85rem;
+      color: rgba(17,16,14,.3);
+      transition: color .3s, transform .3s;
+      display: block;
+    }
+    .nav-link:hover .nav-arrow {
+      color: rgba(17,16,14,.65);
+      transform: translateX(5px);
+    }
+    .nav-link:nth-child(2):hover .nav-arrow {
+      transform: translateX(-5px);
+    }
+
+    /* Punto decorativo central */
+    .ui-center {
+      position: fixed;
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .6rem;
+      opacity: 0;
+      animation: fadeUp .8s 1.3s ease forwards;
+      pointer-events: none;
+    }
+    .center-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: rgba(17,16,14,.2);
+    }
+    .center-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, transparent, rgba(17,16,14,.15), transparent);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .ui-name  { padding: 1.5rem; font-size: .6rem; }
+      .ui-year  { top: 1.5rem; right: 1.5rem; }
+      .ui-nav   { padding: 1.5rem 1.75rem; }
+      .nav-title{ font-size: clamp(1.8rem, 9vw, 2.8rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- UI OVERLAY -->
+  <div class="ui">
+    <span class="ui-name">Portafolio</span>
+
+    <nav class="ui-nav">
+      <a href="trabajos/index.html" class="nav-link">
+        <span class="nav-label">01</span>
+        <span class="nav-title">Trabajos</span>
+        <span class="nav-arrow">→</span>
+      </a>
+
+      <a href="sobre-mi/index.html" class="nav-link">
+        <span class="nav-label">02</span>
+        <span class="nav-title">Sobre mí</span>
+        <span class="nav-arrow">←</span>
+      </a>
+    </nav>
   </div>
-  <div class="card-body">
-    <div class="card-meta">
-      <span class="tag accent">Web</span>
-      <span class="tag">2025</span>
-    </div>
-    <h2 class="card-title">Mi Proyecto</h2>
-    <p class="card-desc">Descripción breve.</p>
-    <span class="card-link">Ver caso completo →</span>
+
+  <div class="ui-center">
+    <div class="center-line"></div>
+    <div class="center-dot"></div>
+    <div class="center-line"></div>
   </div>
-</a>
-```
 
-`data-cat` puede ser: `web` | `app` | `diseño`  
-`class` puede ser: `large` (span 7) | `small` (span 5) | `full` (span 12)
+  <span class="ui-year">© 2025</span>
 
-## Publicar en GitHub Pages
-1. Sube todo a un repositorio GitHub.
-2. Settings → Pages → Source: `main` / `root`.
-3. URL: `https://tu-usuario.github.io/nombre-repo/`
+  <!-- ANIMACIÓN DOT WAVE -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script>
+    let cols, rows;
+    const SPACING = 20;
+    let t = 0;
+    let mx, my;
 
-## Personalizar colores
-Edita las variables en `assets/css/shared.css`:
-```css
---accent: #C85C3A;   /* color principal */
---bg:     #0D0C0B;   /* fondo oscuro    */
---ink:    #F0EBE3;   /* texto principal */
-```
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      noStroke();
+      mx = width / 2;
+      my = height / 2;
+      cols = floor(width / SPACING) + 2;
+      rows = floor(height / SPACING) + 2;
+    }
+
+    function draw() {
+      background(233, 229, 222); // #E9E5DE — mismo fondo que Trabajos
+      t += 0.016;
+
+      mx = lerp(mx, mouseX, 0.08);
+      my = lerp(my, mouseY, 0.08);
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          let x = i * SPACING;
+          let y = j * SPACING;
+
+          let dx = x - mx;
+          let dy = y - my;
+          let d = sqrt(dx * dx + dy * dy);
+
+          let wave = sin(x * 0.022 + t * 1.1) * 18
+                   + cos(y * 0.022 - t * 0.85) * 18
+                   + sin((x - y) * 0.015 + t * 0.6) * 10;
+
+          let influence = constrain(1 - d / 180, 0, 1);
+          influence = influence * influence;
+          let angle = atan2(dy, dx);
+          let push = influence * 35;
+
+          let px = x + cos(angle) * push;
+          let py = y + wave * 0.7 + sin(angle) * push;
+
+          let waveNorm = map(sin(x * 0.022 + t * 1.1 + j * 0.3), -1, 1, 0, 1);
+          // oscuridad base: de gris medio (160) a casi negro (30)
+          let baseDark = map(waveNorm, 0, 1, 160, 30);
+          // cursor lo oscurece más
+          let cursorDark = influence * 30;
+          let dark = max(baseDark - cursorDark, 10);
+
+          let sz = map(influence, 0, 1, 1.5, 5.5);
+
+          // halo sutil cerca del cursor
+          if (influence > 0.05) {
+            fill(dark, dark, dark, influence * 25);
+            ellipse(px, py, sz * 3.5, sz * 3.5);
+          }
+
+          // punto principal gris oscuro / negro
+          fill(dark, dark, dark, map(waveNorm, 0, 1, 80, 200));
+          ellipse(px, py, sz, sz);
+
+          // núcleo negro puro cerca del cursor
+          if (influence > 0.4) {
+            fill(10, 10, 10, 255);
+            ellipse(px, py, sz * 0.45, sz * 0.45);
+          }
+        }
+      }
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      cols = floor(width / SPACING) + 2;
+      rows = floor(height / SPACING) + 2;
+    }
+  </script>
+
+</body>
+</html>
