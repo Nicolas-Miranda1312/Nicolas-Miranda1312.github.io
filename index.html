@@ -10,7 +10,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #000;
+      background: #E9E5DE;
       overflow: hidden;
       height: 100svh;
       width: 100vw;
@@ -42,7 +42,7 @@
       font-size: .7rem;
       letter-spacing: .3em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.25);
+      color: rgba(17,16,14,.35);
       opacity: 0;
       animation: fadeUp .9s .4s ease forwards;
     }
@@ -55,7 +55,7 @@
       font-family: 'Syne Mono', monospace;
       font-size: .65rem;
       letter-spacing: .25em;
-      color: rgba(255,255,255,.18);
+      color: rgba(17,16,14,.25);
       opacity: 0;
       animation: fadeUp .9s .6s ease forwards;
       pointer-events: none;
@@ -92,17 +92,17 @@
       font-size: .6rem;
       letter-spacing: .25em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.3);
+      color: rgba(17,16,14,.35);
       transition: color .3s;
     }
-    .nav-link:hover .nav-label { color: rgba(255,255,255,.55); }
+    .nav-link:hover .nav-label { color: rgba(17,16,14,.7); }
 
     .nav-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
       font-size: clamp(2rem, 5vw, 4rem);
       line-height: 1;
-      color: rgba(255,255,255,.88);
+      color: rgba(17,16,14,.85);
       letter-spacing: -.01em;
       position: relative;
       transition: color .3s;
@@ -115,7 +115,7 @@
       left: 0;
       width: 0;
       height: 1px;
-      background: rgba(255,255,255,.45);
+      background: rgba(17,16,14,.4);
       transition: width .4s ease;
     }
     .nav-link:nth-child(2) .nav-title::after {
@@ -123,17 +123,17 @@
       right: 0;
     }
     .nav-link:hover .nav-title::after { width: 100%; }
-    .nav-link:hover .nav-title { color: #fff; }
+    .nav-link:hover .nav-title { color: #111; }
 
     .nav-arrow {
       font-family: 'Syne Mono', monospace;
       font-size: .85rem;
-      color: rgba(255,255,255,.28);
+      color: rgba(17,16,14,.3);
       transition: color .3s, transform .3s;
       display: block;
     }
     .nav-link:hover .nav-arrow {
-      color: rgba(255,255,255,.55);
+      color: rgba(17,16,14,.65);
       transform: translateX(5px);
     }
     .nav-link:nth-child(2):hover .nav-arrow {
@@ -157,12 +157,12 @@
     .center-dot {
       width: 3px; height: 3px;
       border-radius: 50%;
-      background: rgba(255,255,255,.22);
+      background: rgba(17,16,14,.2);
     }
     .center-line {
       width: 1px;
       height: 36px;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,.18), transparent);
+      background: linear-gradient(to bottom, transparent, rgba(17,16,14,.15), transparent);
     }
 
     @keyframes fadeUp {
@@ -225,7 +225,7 @@
     }
 
     function draw() {
-      background(0);
+      background(233, 229, 222); // #E9E5DE — mismo fondo que Trabajos
       t += 0.016;
 
       mx = lerp(mx, mouseX, 0.08);
@@ -253,22 +253,27 @@
           let py = y + wave * 0.7 + sin(angle) * push;
 
           let waveNorm = map(sin(x * 0.022 + t * 1.1 + j * 0.3), -1, 1, 0, 1);
-          let baseBright = map(waveNorm, 0, 1, 30, 200);
-          let cursorBright = influence * 255;
-          let bright = min(baseBright + cursorBright, 255);
+          // oscuridad base: de gris medio (160) a casi negro (30)
+          let baseDark = map(waveNorm, 0, 1, 160, 30);
+          // cursor lo oscurece más
+          let cursorDark = influence * 30;
+          let dark = max(baseDark - cursorDark, 10);
 
           let sz = map(influence, 0, 1, 1.5, 5.5);
 
+          // halo sutil cerca del cursor
           if (influence > 0.05) {
-            fill(255, 255, 255, bright * 0.15);
+            fill(dark, dark, dark, influence * 25);
             ellipse(px, py, sz * 3.5, sz * 3.5);
           }
 
-          fill(255, 255, 255, bright);
+          // punto principal gris oscuro / negro
+          fill(dark, dark, dark, map(waveNorm, 0, 1, 80, 200));
           ellipse(px, py, sz, sz);
 
+          // núcleo negro puro cerca del cursor
           if (influence > 0.4) {
-            fill(255, 255, 255, 255);
+            fill(10, 10, 10, 255);
             ellipse(px, py, sz * 0.45, sz * 0.45);
           }
         }
