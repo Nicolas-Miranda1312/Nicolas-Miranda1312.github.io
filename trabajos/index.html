@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trabajos — Portafolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{
+  background:#E9E5DE;
+  font-family:'Familjen Grotesk',sans-serif;
+  color:#111;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+#cur{
+  position:fixed;z-index:9000;pointer-events:none;
+  left:0;top:0;
+}
+#cur .cr{
+  width:30px;height:30px;border-radius:50%;
+  border:1.5px solid #111;
+  position:absolute;transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,border-color .25s,background .25s;
+}
+#cur .cd{
+  width:4px;height:4px;background:#111;border-radius:50%;
+  position:absolute;transform:translate(-50%,-50%);
+}
+body.hov #cur .cr{width:56px;height:56px;background:rgba(0,0,0,.05);border-color:#000;}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.4rem 2.5rem;
+}
+.nav a{
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(17,17,17,.5);text-decoration:none;transition:color .2s;
+}
+.nav a:hover{color:#111;}
+.nav-center{
+  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  color:#111;
+}
+.nav-right{
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(17,17,17,.4);
+}
+
+/* ── ESCENA PRINCIPAL ── */
+#scene{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* Título */
+.scene-title{
+  margin-top:4.5rem;
+  text-align:center;
+  pointer-events:none;
+  user-select:none;
+  z-index:10;
+}
+.scene-title h1{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;
+  font-size:clamp(2.4rem,5.5vw,4.8rem);
+  line-height:1;
+  color:#111;
+}
+.scene-title p{
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(17,17,17,.4);margin-top:.55rem;
+}
+
+/* Hint de interacción */
+.scene-hint{
+  position:fixed;bottom:2.2rem;left:50%;transform:translateX(-50%);
+  font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(17,17,17,.35);
+  display:flex;align-items:center;gap:.75rem;
+  z-index:10;pointer-events:none;
+}
+.scene-hint::before,.scene-hint::after{
+  content:'';width:28px;height:1px;background:rgba(17,17,17,.25);
+}
+
+/* ── CONTENEDOR DEL ARCO ── */
+#arc-wrap{
+  position:absolute;
+  left:50%;
+  bottom:40px;
+  width:0;height:0;
+}
+
+/* Cada tarjeta se posiciona desde el centro del arco */
+.arc-card{
+  position:absolute;
+  width:160px;height:255px;
+  margin-left:-80px;
+  margin-top:0px;
+  border-radius:18px;
+  overflow:hidden;
+  cursor:none;
+  box-shadow:0 6px 28px rgba(0,0,0,.16);
+  transition:
+    box-shadow .35s,
+    outline .2s;
+  transform-origin:50% 100%;
+  will-change:transform;
+  outline:0px solid rgba(255,255,255,0);
+}
+.arc-card.is-center{
+  box-shadow:0 16px 56px rgba(0,0,0,.32);
+  outline:2.5px solid rgba(255,255,255,.7);
+  z-index:100!important;
+}
+.arc-card canvas{
+  display:block;
+  width:100%;height:100%;
+  pointer-events:none;
+}
+.arc-card-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:.65rem 1rem;
+  background:linear-gradient(transparent,rgba(0,0,0,.6));
+  color:#fff;
+  pointer-events:none;
+}
+.acl-num{font-size:.5rem;letter-spacing:.18em;opacity:.65;line-height:1;margin-bottom:.2rem;}
+.acl-name{font-size:.82rem;font-weight:500;line-height:1.2;}
+
+/* ── VISTA DETALLE ── */
+#detail{
+  position:fixed;inset:0;z-index:600;
+  background:#E9E5DE;
+  overflow-y:auto;
+  opacity:0;transform:translateY(32px);
+  pointer-events:none;
+  transition:opacity .45s cubic-bezier(.25,.46,.45,.94),
+             transform .45s cubic-bezier(.25,.46,.45,.94);
+}
+#detail.open{opacity:1;transform:none;pointer-events:auto;}
+
+.det-inner{max-width:800px;margin:0 auto;padding:5.5rem 2rem 5rem;}
+
+.det-hero{
+  width:100%;aspect-ratio:16/9;
+  border-radius:14px;overflow:hidden;
+  margin-bottom:2.2rem;
+  box-shadow:0 10px 40px rgba(0,0,0,.16);
+}
+.det-hero canvas{width:100%;height:100%;display:block;}
+
+.det-meta{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.det-tag{
+  font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;
+  padding:.22rem .7rem;
+  border:1px solid rgba(17,17,17,.22);
+  border-radius:100px;color:rgba(17,17,17,.55);
+}
+.det-title{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;
+  font-size:clamp(2rem,5vw,3.8rem);
+  line-height:1.05;margin-bottom:1.25rem;
+}
+.det-desc{
+  font-size:1rem;color:rgba(17,17,17,.6);
+  line-height:1.78;max-width:540px;margin-bottom:2.5rem;
+}
+.det-sec{
+  font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(17,17,17,.35);margin-bottom:1rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.det-sec::after{content:'';flex:1;height:1px;background:rgba(17,17,17,.1);}
+.det-pgrid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:2.5rem;}
+.det-pc{
+  background:rgba(17,17,17,.04);border:1px solid rgba(17,17,17,.08);
+  border-radius:10px;padding:1.1rem;
+}
+.det-pc h4{font-size:.82rem;font-weight:500;margin-bottom:.35rem;}
+.det-pc p{font-size:.82rem;color:rgba(17,17,17,.55);line-height:1.6;}
+.det-gal{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:2.5rem;}
+.det-gi{aspect-ratio:4/3;border-radius:9px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.1);}
+.det-gi canvas{width:100%;height:100%;display:block;}
+.det-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2.5rem;}
+.det-tool{
+  font-size:.68rem;letter-spacing:.05em;
+  padding:.38rem .95rem;
+  background:#111;color:#E9E5DE;
+  border-radius:100px;
+}
+
+/* Botón cerrar */
+#det-close{
+  position:fixed;top:1.3rem;right:2.5rem;z-index:700;
+  width:40px;height:40px;border-radius:50%;
+  border:1.5px solid rgba(17,17,17,.18);
+  background:rgba(233,229,222,.88);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,background .2s;
+}
+#det-close.show{opacity:1;pointer-events:auto;}
+#det-close:hover{background:#111;}
+#det-close svg{transition:stroke .2s;}
+#det-close:hover svg{stroke:#E9E5DE;}
+
+@media(max-width:600px){
+  .arc-card{width:118px;height:190px;margin-left:-59px;border-radius:13px;}
+  #arc-wrap{bottom:30vh;} /* pivot al 30% desde abajo → tarjetas centradas en móvil */
+  .det-pgrid,.det-gal{grid-template-columns:1fr;}
+  .det-inner{padding:4.5rem 1.2rem 3rem;}
+  .scene-title{margin-top:3.5rem;}
+  .scene-title h1{font-size:2rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"><div class="cr"></div><div class="cd"></div></div>
+
+<nav class="nav">
+  <a href="../index.html" id="nav-back">← Inicio</a>
+  <span class="nav-center">Portafolio</span>
+  <span class="nav-right" id="nav-hint">Scroll · Acelerar</span>
+</nav>
+
+<div id="scene">
+  <div class="scene-title">
+    <h1>Trabajos</h1>
+    <p>Diseño Industrial · 2021–2025</p>
+  </div>
+  <div id="arc-wrap"></div>
+  <div class="scene-hint">Rueda del mouse para acelerar</div>
+</div>
+
+<button id="det-close" aria-label="Cerrar">
+  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round">
+    <line x1="1" y1="1" x2="12" y2="12"/><line x1="12" y1="1" x2="1" y2="12"/>
+  </svg>
+</button>
+
+<div id="detail"><div class="det-inner" id="det-content"></div></div>
+
+<script>
+/* ═══════════════════════════════════════
+   PROYECTOS — añade aquí los que quieras
+   ═══════════════════════════════════════ */
+const PROJECTS = [
+  { num:'01', name:'Mesa Estructura',    year:'2024', tags:['Mobiliario','Madera','CNC'],         tools:['Rhinoceros 3D','Grasshopper','CNC Router','Aceite de tung'],          palette:['#FF6B35','#1B4332','#F9C74F','#023E8A'], style:'mesh',  desc:'Sistema modular de apoyo en madera recuperada y acero laminado. Geometría paramétrica tensada con la veta natural del material.', process:[{t:'Investigación',d:'Estudio de ensambles japoneses adaptados a producción semi-industrial.'},{t:'Prototipado',d:'3 iteraciones en MDF. Test de carga con 180 kg.'},{t:'Fabricación',d:'CNC de precisión ±0.1mm, acabado con aceite de tung en 3 capas.'},{t:'Serie',d:'Edición limitada de 12 unidades por lote.'}] },
+  { num:'02', name:'Objeto Utilitario',  year:'2024', tags:['Cerámica','Torno'],                  tools:['Torno de alfarero','Horno gas 1280°C','Esmaltes naturales'],            palette:['#A8DADC','#E63946','#457B9D','#F1FAEE'],  style:'dots',  desc:'Serie de piezas domésticas que preservan la huella táctil del proceso artesanal como evidencia del tiempo.', process:[{t:'Concepto',d:'La imperfección como valor de producción intencional.'},{t:'Material',d:'Arcilla chamotada. Temperatura: 1280°C.'},{t:'Esmalte',d:'Formulación propia con ceniza volcánica local.'},{t:'Edición',d:'30 piezas numeradas y documentadas.'}] },
+  { num:'03', name:'Módulo Cero',        year:'2023', tags:['Sistemas','Acero','Láser'],           tools:['SolidWorks','Corte láser','TIG Welding','Anodizado'],                  palette:['#FFBE0B','#FB5607','#FF006E','#3A0CA3'],  style:'grid',  desc:'Sistema estructural ensamblable sin herramientas. 12 tipologías de nodo generan +200 configuraciones.', process:[{t:'Sistema',d:'Tolerancias ±0.3mm para ensamble manual fluido.'},{t:'Material',d:'Acero laminado 2mm. Anodizado negro mate.'},{t:'Prueba',d:'Instalación piloto en Matucana 100, Santiago.'},{t:'Variantes',d:'Powder coat en 6 colores estándar.'}] },
+  { num:'04', name:'Silla Tubo',         year:'2023', tags:['Mobiliario','Acero','Doblado'],       tools:['Dobladoras CNC','AutoCAD','MIG Welding','Pintura electrostática'],     palette:['#06D6A0','#118AB2','#073B4C','#FFD166'],  style:'lines', desc:'Un único tubo de acero 22mm doblado en frío genera asiento, respaldo y estructura en recorrido continuo.', process:[{t:'Geometría',d:'Simulación digital de pliegues antes del primer doble.'},{t:'Ergonomía',d:'Test con 24 usuarios. Ajuste de ángulo de respaldo.'},{t:'Producción',d:'Fabricable en taller pequeño. 45 min/unidad.'},{t:'Acabado',d:'Pintura electrostática en 8 colores.'}] },
+  { num:'05', name:'Sistema Visual',     year:'2023', tags:['Identidad','Packaging'],              tools:['Illustrator','InDesign','Impresión offset','Foil cobre'],              palette:['#F72585','#7209B7','#3A0CA3','#4CC9F0'],  style:'mesh',  desc:'Lenguaje material completo para marca emergente. Sistema de 4 familias con lógica cromática propia.', process:[{t:'Investigación',d:'Análisis de 80 competidores. Mapeo de espacio visual disponible.'},{t:'Sistema',d:'4 familias. Papel reciclado 100%, tintas vegetales.'},{t:'Detalle',d:'Foil cobre en hot stamping. Tipografía propietaria.'},{t:'Escala',d:'12 piezas packaging + identidad digital + señalética.'}] },
+  { num:'06', name:'Tejido Técnico',     year:'2022', tags:['Textil','Producto','Bio'],             tools:['Telar semi-industrial','Adobe Color','Tinturas naturales','CAD'],     palette:['#52B788','#B7E4C7','#1B4332','#D8F3DC'],  style:'dots',  desc:'Exploración de fibras naturales en contexto industrial. Texturas funcionales para aplicación en equipamiento urbano.', process:[{t:'Material',d:'Lino, yute y fibra de coco. Sin sintéticos.'},{t:'Color',d:'Tintes naturales: añil, cúrcuma y mora.'},{t:'Estructura',d:'3 ligamentos distintos para resistencias diferenciadas.'},{t:'Uso',d:'Prototipo instalado en banca de espacio público.'}] },
+  { num:'07', name:'Luminaria Piel',     year:'2022', tags:['Iluminación','Cuero','Artesanal'],    tools:['Sketchbook Pro','Láser cuero','LED 2700K','Costura manual'],          palette:['#D4A373','#CCD5AE','#E9EDC9','#FEFAE0'],  style:'grid',  desc:'Difusor de luz en cuero vegetal cortado láser. La piel envejece con el uso, transformando la pieza con el tiempo.', process:[{t:'Material',d:'Cuero vegetal 2.5mm. Adquiere pátina con el uso.'},{t:'Luz',d:'LED 2700K difuminado. Consumo 8W.'},{t:'Corte',d:'Patrón generativo. Cada pieza es única.'},{t:'Montaje',d:'Sistema de costura manual visible como detalle.'}] },
+  { num:'08', name:'Kit Emergencia',     year:'2022', tags:['Producto','Diseño Social','ABS'],     tools:['Fusion 360','Inyección plástica','Serigrafía','User testing'],        palette:['#EF233C','#D90429','#8D99AE','#EDF2F4'],  style:'lines', desc:'Equipo de primeros auxilios para zonas sin acceso a salud. Diseñado con y para comunidades rurales del sur de Chile.', process:[{t:'Co-diseño',d:'12 talleres con comunidades mapuche en La Araucanía.'},{t:'Material',d:'ABS reciclado + silicona médica. IP54.'},{t:'Producción',d:'Molde de inyección para serie de 500 unidades.'},{t:'Distribución',d:'Piloto activo en 3 postas rurales.'}] },
+  { num:'09', name:'Estante Orgánico',   year:'2021', tags:['Mobiliario','Madera','Torno CNC'],   tools:['Rhino + Grasshopper','Torno CNC','Laca natural','Fotografía'],       palette:['#E9C46A','#F4A261','#E76F51','#264653'],  style:'mesh',  desc:'Estante generado por algoritmo paramétrico que simula el crecimiento de ramas. Ninguna pieza es igual a otra.', process:[{t:'Algoritmo',d:'Grasshopper genera geometría a partir de parámetros de "crecimiento".'},{t:'Fabricación',d:'Torno CNC 4 ejes. Madera de eucalipto.'},{t:'Acabado',d:'Laca natural mate. Revela el grano interior.'},{t:'Serie',d:'Edición de autor: 5 piezas firmadas.'}] },
+  { num:'10', name:'Mochila Modular',    year:'2021', tags:['Accesorios','Cordura','Sistemas'],   tools:['CLO 3D','Costura industrial','Laser','Broches YKK'],                 palette:['#6D6875','#B5838D','#E5989B','#FFB4A2'],  style:'dots',  desc:'Sistema de carga con módulos intercambiables por broches magnéticos. Configurable para ciudad, montaña o trabajo.', process:[{t:'Sistema',d:'7 módulos distintos. 43 configuraciones posibles.'},{t:'Material',d:'Cordura 500D + base rígida HDPE 2mm.'},{t:'Ergonomía',d:'Distribución de peso validada con sensor de presión.'},{t:'Prototipo',d:'v3 en uso por 6 meses. Sin fallas estructurales.'}] },
+  { num:'11', name:'Señalética Táctil',  year:'2021', tags:['Inclusivo','Sistemas','Bronce'],     tools:['AutoCAD','Fundición bronce','Braille encoding','Instalación'],       palette:['#C9B99A','#A68A64','#7D6037','#3D2B1F'],  style:'grid',  desc:'Sistema de señalética para personas con discapacidad visual en espacio patrimonial. Fusión de braille con diseño tipográfico.', process:[{t:'Investigación',d:'Colaboración con Fundación Luz. 40 entrevistas.'},{t:'Material',d:'Bronce fundido. Alta durabilidad en exterior.'},{t:'Braille',d:'Codificación validada por revisores certificados.'},{t:'Instalación',d:'Piloto en Museo de Arte Precolombino, Santiago.'}] },
+  { num:'12', name:'Banca Compuesta',    year:'2025', tags:['Urbano','Compuesto','Paramétrico'],  tools:['Rhino','Fabricación CNC','Resina epoxi','Fibra carbono'],             palette:['#023047','#219EBC','#8ECAE6','#FFB703'],  style:'lines', desc:'Banca de espacio público en material compuesto de carbono y resina. Estructura laminar de alta resistencia con peso mínimo.', process:[{t:'Material',d:'Fibra carbono 3K + epoxi de baja viscosidad.'},{t:'Fabricación',d:'Laminado manual en molde CNC de poliuretano.'},{t:'Carga',d:'Resistencia: 800 kg/m². Peso: 8 kg.'},{t:'Estado',d:'3 unidades instaladas en Plaza Ñuñoa, Santiago.'}] },
+  { num:'13', name:'Envase Bioplástico', year:'2025', tags:['Packaging','Bioplástico','Bio'],     tools:['Fusion 360','Termoformado','Bioplástico PLA','Serigrafía vegetal'],  palette:['#2DC653','#F7FFF7','#1A535C','#FFE66D'],  style:'mesh',  desc:'Envase de producto cosmético fabricado en bioplástico de almidón de maíz. 100% compostable en 90 días. Diseñado para cero residuo.', process:[{t:'Material',d:'PLA + almidón de maíz. Certificado compostable OK Compost.'},{t:'Proceso',d:'Termoformado en molde de aluminio CNC.'},{t:'Gráfica',d:'Serigrafía con tintas a base de agua. Sin solventes.'},{t:'Ciclo',d:'El envase se convierte en abono al final de su vida útil.'}] },
+  { num:'14', name:'Silla Apilable',     year:'2025', tags:['Mobiliario','Aluminio','Serie'],     tools:['SolidWorks','Extrusión aluminio','Anodizado','Test EN 16139'],       palette:['#C0C0C0','#2B2D42','#EF233C','#8D99AE'],  style:'grid',  desc:'Silla de uso público apilable hasta 12 unidades. Estructura en aluminio extruido con asiento de polipropileno reciclado. Certificada EN 16139.', process:[{t:'Geometría',d:'Perfil de extrusión optimizado para rigidez y peso mínimo.'},{t:'Ergonomía',d:'Ángulo de asiento 4°. Altura: 46cm. Test con 80 usuarios.'},{t:'Producción',d:'Serie de 500 unidades. Tiempo de ciclo: 12 min/silla.'},{t:'Certificación',d:'Aprobada norma europea EN 16139 nivel 2.'}] },
+  { num:'15', name:'Reloj de Pared',     year:'2026', tags:['Producto','Latón','Artesanal'],     tools:['Rhino','Torno manual','Latón','Mecanismo Miyota'],                   palette:['#B5935A','#F2E9D8','#3D1F00','#FFD700'],  style:'dots',  desc:'Reloj de pared en latón torneado a mano. Mecanismo japonés de alta precisión. Cada pieza tarda 6 horas en fabricarse. Edición de 20 unidades.', process:[{t:'Material',d:'Latón macizo C360. Torneado manual en torno paralelo.'},{t:'Mecanismo',d:'Miyota 2035. Precisión ±15 seg/mes.'},{t:'Acabado',d:'Pulido espejo en esfera. Oxidado en agujas.'},{t:'Edición',d:'20 unidades firmadas y numeradas. Bajo pedido.'}] },
+];
+
+/* ═══════════════════════
+   GRÁFICAS GENERATIVAS
+   ═══════════════════════ */
+function drawCanvas(cv, proj, w, h) {
+  cv.width = w; cv.height = h;
+  const ctx = cv.getContext('2d');
+  const p = proj.palette;
+  const s = proj.style;
+
+  if (s === 'mesh') {
+    ctx.fillStyle = p[3]; ctx.fillRect(0,0,w,h);
+    [[.2,.2],[.8,.3],[.5,.7],[.1,.8],[.9,.6]].forEach(([fx,fy],i)=>{
+      const gx=fx*w, gy=fy*h, r=Math.max(w,h)*.75;
+      const g=ctx.createRadialGradient(gx,gy,0,gx,gy,r);
+      g.addColorStop(0,p[i%p.length]+'DD'); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+    });
+  } else if (s === 'dots') {
+    ctx.fillStyle=p[3]||'#111'; ctx.fillRect(0,0,w,h);
+    const cols=5, rows=7;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      const cx2=(c+.5)*w/cols, cy2=(r+.5)*h/rows;
+      const sz=Math.min(w/cols,h/rows)*.37;
+      ctx.beginPath(); ctx.arc(cx2,cy2,sz,0,Math.PI*2);
+      ctx.fillStyle=p[(r*cols+c)%p.length]; ctx.fill();
+    }
+  } else if (s === 'grid') {
+    ctx.fillStyle=p[3]||'#000'; ctx.fillRect(0,0,w,h);
+    const n=9;
+    for(let i=0;i<n;i++){
+      const x=i*w/n, bw=(w/n)*(Math.random()*.55+.25);
+      ctx.fillStyle=p[i%p.length]+'CC';
+      ctx.fillRect(x,0,bw,h);
+    }
+    for(let j=0;j<5;j++){
+      ctx.fillStyle=p[(j+1)%p.length]+'55';
+      ctx.fillRect(0,j*h/4,w,h/11);
+    }
+  } else { // lines
+    ctx.fillStyle='#080808'; ctx.fillRect(0,0,w,h);
+    const n=30;
+    for(let i=0;i<n;i++){
+      const x=i*w/n;
+      const amp=h*.35*Math.sin(i*.38+1.2);
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x+amp,h);
+      ctx.strokeStyle=p[i%p.length];
+      ctx.lineWidth=(w/n)*.7; ctx.globalAlpha=.88; ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  // Número sutil
+  ctx.font=`bold ${Math.round(w*.28)}px 'Familjen Grotesk',sans-serif`;
+  ctx.fillStyle='rgba(255,255,255,.07)';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(proj.num, w*.5, h*.52);
+}
+
+/* ═══════════════════════
+   CONSTRUCCIÓN DEL ARCO
+   ═══════════════════════ */
+const arcWrap = document.getElementById('arc-wrap');
+const N = PROJECTS.length;
+
+// Radio del arco (distancia del pivot al centro de la tarjeta)
+// El pivot está en arc-wrap (bottom:-420px desde la base de pantalla)
+// Las tarjetas se colocan girando alrededor de ese pivot
+
+// Valores responsivos según el ancho de pantalla
+function getArcParams() {
+  const w = window.innerWidth;
+  if (w <= 600) {
+    return { radius: 200, arcHalf: Math.PI * 1.2 }; // móvil: radio corto, arco concentrado
+  } else if (w <= 900) {
+    return { radius: 250, arcHalf: Math.PI * 1.45 };
+  } else {
+    return { radius: 420, arcHalf: Math.PI * 1.667 }; // escritorio
+  }
+}
+
+let { radius: ARC_RADIUS, arcHalf: ARC_HALF } = getArcParams();
+
+// Recalcular al cambiar tamaño
+window.addEventListener('resize', () => {
+  const p = getArcParams();
+  ARC_RADIUS = p.radius;
+  ARC_HALF   = p.arcHalf;
+});
+// Ángulo visible: mostramos el arco superior del círculo
+// Las tarjetas están en posición angular theta desde -PI (izquierda) a 0 (arriba) a +PI (derecha)
+// Trabajamos con theta = 0 en la parte superior del círculo
+
+const cardEls = [];
+const cardCanvases = [];
+
+PROJECTS.forEach((proj, i) => {
+  const card = document.createElement('div');
+  card.className = 'arc-card';
+  card.dataset.idx = i;
+
+  const cv = document.createElement('canvas');
+  drawCanvas(cv, proj, 320, 512);
+  cardCanvases.push(cv);
+
+  card.appendChild(cv);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'arc-card-label';
+  lbl.innerHTML = `<div class="acl-num">Proyecto ${proj.num}</div><div class="acl-name">${proj.name}</div>`;
+  card.appendChild(lbl);
+
+  arcWrap.appendChild(card);
+  cardEls.push(card);
+
+  card.addEventListener('click', () => openDetail(proj, cv));
+  card.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+  card.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+});
+
+/* ═══════════════════════════════════════
+   MOTOR DE ROTACIÓN
+   
+   Modelo: cada tarjeta tiene un índice i.
+   La posición angular de la tarjeta i es:
+     theta_i = offset + (i / N) * 2*PI
+   
+   El offset aumenta con el tiempo (rotación continua).
+   Mostramos el arco: ángulo visible = ventana de ~120° centrada en theta=0 (arriba).
+   Las tarjetas fuera del rango se ocultan.
+   
+   Coordenadas desde pivot (arc-wrap):
+     x = R * sin(theta)     (positivo = derecha)
+     y = -R * cos(theta)    (negativo = arriba del pivot)
+   
+   La tarjeta se rota para quedar tangente al arco:
+     card rotate = theta (en grados)
+   ═══════════════════════════════════════ */
+
+let offset = 0;           // ángulo acumulado (radianes)
+const BASE_SPEED = 0.0007; // rad/frame — velocidad base
+let speed = BASE_SPEED;
+let targetSpeed = BASE_SPEED;
+let lastWheel = 0;
+
+// Arco visible: desde -60° a +60° (arriba = 0)
+// Ángulo visible: calculado dinámicamente en getArcParams()
+
+function positionCards() {
+  const TWO_PI = Math.PI * 2;
+  const R = ARC_RADIUS;
+
+  let centerCardIdx = -1;
+  let minAngleDist = Infinity;
+
+  cardEls.forEach((card, i) => {
+    // ángulo de esta tarjeta en el círculo completo
+    let theta = offset + (i / N) * TWO_PI;
+    // normalizar a [-PI, PI]
+    theta = ((theta % TWO_PI) + TWO_PI) % TWO_PI;
+    if (theta > Math.PI) theta -= TWO_PI;
+
+    // Visibilidad: solo mostramos el arco frontal superior
+    const inArc = Math.abs(theta) < ARC_HALF;
+    card.style.display = inArc ? '' : 'none';
+    if (!inArc) return;
+
+    // Posición en el plano desde el pivot
+    const x = R * Math.sin(theta);
+    const y = -R * Math.cos(theta);
+
+    // La tarjeta se posiciona en (x, y) desde arc-wrap
+    // y se rota theta grados para quedar tangente al arco
+    const deg = theta * (180 / Math.PI);
+    card.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg)`;
+
+    // z-index: las del centro más arriba
+    const zBase = Math.round((1 - Math.abs(theta) / ARC_HALF) * 90);
+    card.style.zIndex = zBase;
+
+    // Escala: la más cercana al centro se agranda
+    const angleDist = Math.abs(theta);
+    if (angleDist < minAngleDist) {
+      minAngleDist = angleDist;
+      centerCardIdx = i;
+    }
+
+    // Escala continua: centro = 1.12, extremos = 0.88
+    const scaleT = 1 - Math.abs(theta) / ARC_HALF;
+    const scale = 0.88 + scaleT * 0.24;
+    card.style.transform = `translate(${x}px, ${y}px) rotate(${deg}deg) scale(${scale})`;
+
+    // Opacidad: extremos más tenues
+    card.style.opacity = 0.55 + scaleT * 0.45;
+
+    card.classList.remove('is-center');
+  });
+
+  if (centerCardIdx >= 0) {
+    cardEls[centerCardIdx].classList.add('is-center');
+  }
+}
+
+/* Loop de animación */
+let raf;
+function loop() {
+  // Inercia de velocidad
+  speed += (targetSpeed - speed) * 0.05;
+
+  offset += speed;
+
+  positionCards();
+  raf = requestAnimationFrame(loop);
+}
+loop();
+
+/* Wheel → acelerar */
+window.addEventListener('wheel', e => {
+  if (document.getElementById('detail').classList.contains('open')) return;
+  const boost = e.deltaY > 0 ? 1 : -1;
+  targetSpeed = BASE_SPEED + boost * 0.0055;
+  clearTimeout(lastWheel);
+  lastWheel = setTimeout(() => {
+    targetSpeed = BASE_SPEED;
+  }, 320);
+}, { passive: true });
+
+/* Touch — horizontal swipe acelera/invierte, solo en móvil/tablet */
+let tx0 = 0, ty0 = 0;
+window.addEventListener('touchstart', e => {
+  tx0 = e.touches[0].clientX;
+  ty0 = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', e => {
+  if (document.getElementById('detail').classList.contains('open')) return;
+
+  const dx = e.touches[0].clientX - tx0; // positivo = derecha
+  const dy = e.touches[0].clientY - ty0;
+  tx0 = e.touches[0].clientX;
+  ty0 = e.touches[0].clientY;
+
+  // Determinar si el gesto es más horizontal que vertical
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Swipe derecha → acelera en dirección positiva (izq→der)
+    // Swipe izquierda → invierte dirección
+    const dir = dx > 0 ? 1 : -1;
+    targetSpeed = BASE_SPEED + dir * 0.006;
+  } else {
+    // Gesto vertical: mantener velocidad base (no hace nada en móvil)
+    targetSpeed = BASE_SPEED;
+  }
+
+  clearTimeout(lastWheel);
+  lastWheel = setTimeout(() => { targetSpeed = BASE_SPEED; }, 400);
+}, { passive: true });
+
+/* ═══════════════════
+   VISTA DETALLE
+   ═══════════════════ */
+function openDetail(proj, srcCv) {
+  const det = document.getElementById('detail');
+  const cnt = document.getElementById('det-content');
+  const closeBtn = document.getElementById('det-close');
+
+  // Hero — canvas grande
+  const heroCv = document.createElement('canvas');
+  drawCanvas(heroCv, proj, 1200, 675);
+
+  // Galería — 4 variantes
+  const galCvs = [0,1,2,3].map(v => {
+    const c = document.createElement('canvas');
+    const rotPalette = [...proj.palette.slice(v), ...proj.palette.slice(0,v)];
+    const styles = ['mesh','dots','grid','lines'];
+    drawCanvas(c, { ...proj, palette: rotPalette, style: styles[v % 4] }, 600, 450);
+    return c;
+  });
+
+  cnt.innerHTML = `
+    <div class="det-hero" id="dh"></div>
+    <div class="det-meta">
+      ${proj.tags.map(t => `<span class="det-tag">${t}</span>`).join('')}
+      <span class="det-tag">${proj.year}</span>
+    </div>
+    <h2 class="det-title">${proj.name}</h2>
+    <p class="det-desc">${proj.desc}</p>
+    <div class="det-sec">Proceso</div>
+    <div class="det-pgrid">
+      ${proj.process.map(s=>`<div class="det-pc"><h4>${s.t}</h4><p>${s.d}</p></div>`).join('')}
+    </div>
+    <div class="det-sec">Galería</div>
+    <div class="det-gal" id="dg"></div>
+    <div class="det-sec">Herramientas</div>
+    <div class="det-tools">
+      ${proj.tools.map(t=>`<span class="det-tool">${t}</span>`).join('')}
+    </div>
+  `;
+
+  document.getElementById('dh').appendChild(heroCv);
+  const galEl = document.getElementById('dg');
+  galCvs.forEach(c => {
+    const w = document.createElement('div');
+    w.className = 'det-gi';
+    w.appendChild(c);
+    galEl.appendChild(w);
+  });
+
+  det.scrollTop = 0;
+  requestAnimationFrame(() => {
+    det.classList.add('open');
+    closeBtn.classList.add('show');
+    document.getElementById('nav-hint').textContent = '← Volver';
+  });
+}
+
+document.getElementById('det-close').addEventListener('click', () => {
+  document.getElementById('detail').classList.remove('open');
+  document.getElementById('det-close').classList.remove('show');
+  document.getElementById('nav-hint').textContent = 'Scroll · Acelerar';
+});
+
+/* ══════════
+   CURSOR
+   ══════════ */
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+});
+</script>
+</body>
+</html>
