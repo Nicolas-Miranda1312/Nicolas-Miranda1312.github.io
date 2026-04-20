@@ -89,8 +89,8 @@ Estos tres valores en `trabajos/index.html` controlan la geometría:
 
 | Variable | Valor actual | Efecto |
 |---|---|---|
-| `bottom` en `#arc-wrap` | `40px` | Altura del pivot — más alto = tarjetas más arriba |
-| `ARC_RADIUS` | `420px` | Radio del arco — más pequeño = tarjetas más juntas |
+| `bottom` en `#arc-wrap` | `80px` | Altura del pivot — más alto = tarjetas más arriba |
+| `ARC_RADIUS` | `300px` | Radio del arco — más pequeño = tarjetas más juntas |
 | `ARC_HALF` | `±150°` | Arco visible — más grande = más tarjetas visibles |
 
 ---
