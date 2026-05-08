@@ -1,0 +1,9 @@
+CARPETA ASSETS/IMAGES — Imágenes globales
+==========================================
+Guarda aquí las imágenes que se usan en múltiples páginas.
+
+  foto.jpg       → tu foto personal (usada en sobre-mi.html)
+                   Tamaño recomendado: 600 × 800 px
+
+Luego en sobre-mi.html, reemplaza el emoji 📸 por:
+  <img src="assets/images/foto.jpg" alt="Tu nombre" />
