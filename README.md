@@ -150,4 +150,4 @@ targetSpeed = BASE_SPEED + (dx > 0 ? 1 : -1) * 0.006;
 
 ---
 
-© 2025 — Portafolio Diseño Industrial
+© 2026 — Portafolio Diseño Industrial
