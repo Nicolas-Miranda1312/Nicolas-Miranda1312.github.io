@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio — Tu Nombre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── HOME EXCLUSIVO ── */
+    body { overflow: hidden; height: 100svh; }
+    canvas { position: fixed; inset: 0; z-index: 0; display: block; }
+
+    .ui {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .ui-nav {
+      padding: 2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      pointer-events: auto;
+    }
+    .ui-link {
+      display: flex; flex-direction: column; gap: .35rem;
+      opacity: 0; text-decoration: none;
+    }
+    .ui-link:nth-child(1) { animation: rise .8s .8s ease forwards; align-items: flex-start; }
+    .ui-link:nth-child(2) { animation: rise .8s .95s ease forwards; align-items: flex-end; }
+
+    .ui-link-num {
+      font-family: var(--font-mono); font-size: .58rem;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(17,16,14,.3); transition: color .3s;
+    }
+    html.dark .ui-link-num { color: rgba(240,235,227,.3); }
+
+    .ui-link-name {
+      font-family: var(--font-body); font-weight: 300;
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1; position: relative;
+      color: rgba(17,16,14,.88); transition: color .3s;
+    }
+    html.dark .ui-link-name { color: rgba(240,235,227,.88); }
+
+    .ui-link-name::after {
+      content: ''; position: absolute;
+      bottom: -3px; left: 0; width: 0; height: 1px;
+      background: var(--accent); transition: width .4s ease;
+    }
+    .ui-link:nth-child(2) .ui-link-name::after { left: auto; right: 0; }
+    .ui-link:hover .ui-link-name::after { width: 100%; }
+    .ui-link:hover .ui-link-name { color: var(--fg); }
+    .ui-link:hover .ui-link-num { color: var(--accent); }
+
+    .ui-link-arrow {
+      font-family: var(--font-mono); font-size: .8rem;
+      color: rgba(17,16,14,.28); transition: color .3s, transform .3s;
+    }
+    html.dark .ui-link-arrow { color: rgba(240,235,227,.28); }
+    .ui-link:hover .ui-link-arrow { color: var(--accent); transform: translateX(5px); }
+    .ui-link:nth-child(2):hover .ui-link-arrow { transform: translateX(-5px); }
+
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav-pill" style="z-index:20;">
+    <a href="trabajos.html">Trabajos</a>
+    <span class="np-sep">·</span>
+    <a href="index.html" class="active">Home</a>
+    <span class="np-sep">·</span>
+    <a href="sobre-mi.html">Sobre mí</a>
+    <button class="np-toggle" id="theme-btn" aria-label="Modo oscuro / claro">
+      <div class="knob"></div>
+    </button>
+  </nav>
+  <div id="cursor"><div class="c-ring"></div><div class="c-dot"></div></div>
+
+  <canvas id="c"></canvas>
+
+  <div class="ui">
+    <nav class="ui-nav">
+      <a href="trabajos.html" class="ui-link">
+        <span class="ui-link-num">01</span>
+        <span class="ui-link-name">Trabajos</span>
+        <span class="ui-link-arrow">→</span>
+      </a>
+      <a href="sobre-mi.html" class="ui-link">
+        <span class="ui-link-num">02</span>
+        <span class="ui-link-name">Sobre mí</span>
+        <span class="ui-link-arrow">←</span>
+      </a>
+    </nav>
+  </div>
+
+
+
+  <!-- p5.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script>
+    const SPACING = 20;
+    let cols, rows, t = 0, mx, my;
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      noStroke();
+      mx = width / 2; my = height / 2;
+      cols = floor(width / SPACING) + 2;
+      rows = floor(height / SPACING) + 2;
+    }
+    function draw() {
+      const isDark = document.documentElement.classList.contains('dark');
+      background(isDark ? 14 : 233, isDark ? 13 : 229, isDark ? 12 : 222);
+      t += 0.016;
+      mx = lerp(mx, mouseX, 0.08);
+      my = lerp(my, mouseY, 0.08);
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          let x = i * SPACING, y = j * SPACING;
+          let dx = x - mx, dy = y - my;
+          let d  = sqrt(dx*dx + dy*dy);
+          let wave = sin(x*.022 + t*1.1)*18 + cos(y*.022 - t*.85)*18 + sin((x-y)*.015 + t*.6)*10;
+          let inf = constrain(1 - d/180, 0, 1); inf = inf*inf;
+          let angle = atan2(dy, dx), push = inf*35;
+          let px = x + cos(angle)*push;
+          let py = y + wave*.7 + sin(angle)*push;
+          let wn = map(sin(x*.022 + t*1.1 + j*.3), -1, 1, 0, 1);
+          let base = map(wn, 0, 1, 160, 30);
+          let bright = min(base - inf*30, 220);
+          let sz = map(inf, 0, 1, 1.5, 5.5);
+          if (inf > 0.05) {
+            fill(isDark ? 220 : bright, isDark ? 215 : bright, isDark ? 210 : bright, inf*22);
+            ellipse(px, py, sz*3.5, sz*3.5);
+          }
+          fill(isDark ? 220 : bright, isDark ? 215 : bright, isDark ? 210 : bright, map(wn,0,1,80,200));
+          ellipse(px, py, sz, sz);
+          if (inf > 0.4) {
+            fill(isDark ? 240 : 10, isDark ? 235 : 10, isDark ? 227 : 10, 255);
+            ellipse(px, py, sz*.45, sz*.45);
+          }
+        }
+      }
+    }
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      cols = floor(width/SPACING)+2;
+      rows = floor(height/SPACING)+2;
+    }
+  </script>
+  <script src="js/cursor.js"></script>
+  <script src="js/theme.js"></script>
+</body>
+</html>
