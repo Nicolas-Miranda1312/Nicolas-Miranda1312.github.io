@@ -47,6 +47,12 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 button { font-family: inherit; cursor: none; border: none; background: none; }
 
+.jersey-10-regular {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* ── CURSOR ── */
 #cursor {
   position: fixed; z-index: 9000; pointer-events: none;
@@ -195,10 +201,21 @@ html.dark .dark-toggle .knob { transform: translateX(20px); }
   color: var(--accent); margin-bottom: .9rem;
 }
 .sec-title {
-  font-family: var(--font-body);
+  font-family: "Jersey 10", sans-serif;
   font-size: clamp(2rem, 5vw, 4rem);
-  font-style: italic; font-weight: 300;
+  font-weight: 400;
+  font-style: normal;
   line-height: 1.05; margin-bottom: 1.5rem;
+}
+.det-title,
+.proj-title,
+.contact-title,
+.about-intro,
+.exp-role,
+.exp-place {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 .sec-rule {
   font-family: var(--font-mono);
