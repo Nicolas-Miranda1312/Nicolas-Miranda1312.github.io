@@ -53,22 +53,17 @@ button { font-family: inherit; cursor: none; border: none; background: none; }
   left: 0; top: 0;
 }
 #cursor .c-ring {
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 1.5px solid var(--fg);
-  position: absolute; transform: translate(-50%,-50%);
-  transition: width .28s var(--ease), height .28s var(--ease),
-              border-color .25s, background .25s;
+  display: none;
 }
 #cursor .c-dot {
-  width: 4px; height: 4px; border-radius: 50%;
+  width: 10px; height: 10px; border-radius: 50%;
   background: var(--fg);
   position: absolute; transform: translate(-50%,-50%);
-  transition: background .25s;
+  transition: transform .18s ease, background .18s ease;
 }
-body.cur-hover #cursor .c-ring {
-  width: 56px; height: 56px;
-  background: rgba(200,92,58,.08);
-  border-color: var(--accent);
+body.cur-hover #cursor .c-dot {
+  transform: translate(-50%,-50%) scale(1.25);
+  background: var(--accent);
 }
 
 /* ── NAV PILL ── */
