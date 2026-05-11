@@ -43,7 +43,7 @@
     }
     function draw() {
       const isDark = document.documentElement.classList.contains('dark');
-      background(isDark ? 14 : 233, isDark ? 13 : 229, isDark ? 12 : 222);
+      background(isDark ? 0 : 255, isDark ? 0 : 255, isDark ? 0 : 255);
       t += 0.016;
       mx = lerp(mx, mouseX, 0.08);
       my = lerp(my, mouseY, 0.08);

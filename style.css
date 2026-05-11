@@ -5,7 +5,7 @@
 
 /* ── VARIABLES ── */
 :root {
-  --bg:        #E9E5DE;
+  --bg:        #FFFFFF;
   --fg:        #111010;
   --fg2:       #5A5650;
   --fg3:       #9A9590;
@@ -24,7 +24,7 @@
 
 /* ── DARK MODE ── */
 html.dark {
-  --bg:      #0E0D0C;
+  --bg:      #000000;
   --fg:      #F0EBE3;
   --fg2:     #9A9590;
   --fg3:     #6B6560;

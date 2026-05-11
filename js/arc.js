@@ -393,7 +393,8 @@ function getArcParams() {
   const w = window.innerWidth;
   if (w <= 600) return { radius: 200, arcHalf: Math.PI * 1.2 };
   if (w <= 900) return { radius: 280, arcHalf: Math.PI * 1.45 };
-  return { radius: 600, arcHalf: Math.PI * 1.667 };
+  return { radius: 590, arcHalf: Math.PI * 1.667 }; 
+  /* radio del arco en escritorio */
 }
 let { radius: ARC_RADIUS, arcHalf: ARC_HALF } = getArcParams();
 window.addEventListener('resize', () => {
