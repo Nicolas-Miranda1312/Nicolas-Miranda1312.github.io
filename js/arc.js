@@ -294,6 +294,17 @@ const PROJECTS = [
 ];
 
 /* ═══════════════════════
+   FILTROS
+   ═══════════════════════ */
+const FILTER_MAP = {
+  'Interacción Digital': proj => proj.tags.includes('Interacción Digital'),
+  'Fabricación Digital': proj => proj.tags.includes('Fabricación Digital'),
+  'Prototipado': proj => proj.tags.includes('Prototipado'),
+};
+
+let currentFilter = null;
+
+/* ═══════════════════════
    GRÁFICAS GENERATIVAS
    (se usan cuando no hay imagen real)
    ═══════════════════════ */
@@ -345,41 +356,57 @@ function drawGen(cv, proj, w, h) {
    MOTOR DEL ARCO
    ═══════════════════════ */
 const arcWrap = document.getElementById('arc-wrap');
-const N = PROJECTS.length;
-const cardEls = [];
+let filteredProjects = PROJECTS;
+let N = filteredProjects.length;
+let cardEls = [];
 
-PROJECTS.forEach((proj, i) => {
-  const card = document.createElement('div');
-  card.className = 'arc-card';
-  card.dataset.idx = i;
+function buildCards() {
+  arcWrap.innerHTML = '';
+  cardEls = [];
+  N = filteredProjects.length;
 
-  // Imagen o canvas generativo
-  if (proj.cover) {
-    const img = document.createElement('img');
-    img.src = proj.cover;
-    img.className = 'arc-card-img';
-    img.alt = proj.name;
-    // fallback si la imagen falla
-    img.onerror = () => {
-      img.replaceWith(makeGenCanvas(proj, 320, 512));
-    };
-    card.appendChild(img);
-  } else {
-    card.appendChild(makeGenCanvas(proj, 320, 512));
-  }
+  filteredProjects.forEach((proj, i) => {
+    const card = document.createElement('div');
+    card.className = 'arc-card';
+    card.dataset.idx = i;
 
-  const lbl = document.createElement('div');
-  lbl.className = 'arc-card-label';
-  lbl.innerHTML = `<div class="acl-num">Proyecto ${proj.num}</div><div class="acl-name">${proj.name}</div>`;
-  card.appendChild(lbl);
+    // Imagen o canvas generativo
+    if (proj.cover) {
+      const img = document.createElement('img');
+      img.src = proj.cover;
+      img.className = 'arc-card-img';
+      img.alt = proj.name;
+      // fallback si la imagen falla
+      img.onerror = () => {
+        img.replaceWith(makeGenCanvas(proj, 320, 512));
+      };
+      card.appendChild(img);
+    } else {
+      card.appendChild(makeGenCanvas(proj, 320, 512));
+    }
 
-  arcWrap.appendChild(card);
-  cardEls.push(card);
+    const lbl = document.createElement('div');
+    lbl.className = 'arc-card-label';
+    lbl.innerHTML = `<div class="acl-num">Proyecto ${proj.num}</div><div class="acl-name">${proj.name}</div>`;
+    card.appendChild(lbl);
 
-  card.addEventListener('click', () => openDetail(proj));
-  card.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
-  card.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
-});
+    arcWrap.appendChild(card);
+    cardEls.push(card);
+
+    card.addEventListener('click', () => openDetail(proj));
+    card.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
+    card.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
+  });
+}
+
+function applyFilter(filter) {
+  currentFilter = filter;
+  filteredProjects = filter ? PROJECTS.filter(FILTER_MAP[filter]) : PROJECTS;
+  buildCards();
+  offset = 0; // reset position
+}
+
+buildCards(); // inicializar
 
 function makeGenCanvas(proj, w, h) {
   const cv = document.createElement('canvas');
@@ -573,3 +600,6 @@ document.getElementById('det-close').addEventListener('click', () => {
   document.getElementById('detail').classList.remove('open');
   document.getElementById('det-close').classList.remove('show');
 });
+
+// Exponer función para filtros desde HTML
+window.setArcFilter = applyFilter;
