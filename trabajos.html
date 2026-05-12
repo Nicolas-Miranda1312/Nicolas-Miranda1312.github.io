@@ -290,6 +290,28 @@
     .filter-menu[hidden] {
       display: none !important;
     }
+
+    @media (max-width: 600px) {
+      .filter-btn {
+        position: fixed;
+        top: calc(1.1rem + 50px);
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 0;
+        box-shadow: 0 2px 20px rgba(0,0,0,.45);
+        z-index: 850;
+      }
+      .filter-menu {
+        position: fixed;
+        top: calc(1.1rem + 100px);
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+      }
+      .nav-pill {
+        flex-wrap: wrap;
+      }
+    }
     .filter-btn:hover { color: rgba(255,255,255,1); }
     .filter-menu {
       width: min(220px, calc(100vw - 2rem));
