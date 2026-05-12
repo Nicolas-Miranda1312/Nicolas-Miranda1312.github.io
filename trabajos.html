@@ -241,29 +241,54 @@
     #det-close svg { transition: stroke .2s; }
     #det-close:hover svg { stroke: var(--bg); }
 
-    .filter-float {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      z-index: 850;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: .5rem;
-    }
     .filter-btn {
       font-family: var(--font-mono);
-      font-size: .75rem;
+      font-size: .66rem;
       text-transform: uppercase;
-      letter-spacing: .15em;
-      padding: .75rem 1rem;
+      letter-spacing: .18em;
+      padding: .45rem 1.1rem;
       border: 1px solid rgba(255,255,255,.07);
-      border-radius: 999px;
+      border-radius: 100px;
       background: #1C1917;
       color: rgba(255,255,255,.85);
       cursor: pointer;
       transition: background .25s, border-color .25s, color .25s;
       box-shadow: 0 2px 20px rgba(0,0,0,.45);
+      margin-left: .5rem;
+      flex-shrink: 0;
+    }
+    .nav-pill {
+      position: fixed;
+      top: 1.1rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      padding: .3rem .3rem .3rem .2rem;
+      background: #1C1917;
+      border-radius: 100px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.45);
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,.07);
+      position: fixed;
+    }
+    .filter-menu {
+      position: absolute;
+      top: calc(100% + .75rem);
+      right: 0;
+      width: min(220px, calc(100vw - 2rem));
+      background: #1C1917;
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      border-radius: 18px;
+      padding: .75rem;
+      display: grid;
+      gap: .4rem;
+      z-index: 851;
+    }
+    .filter-menu[hidden] {
+      display: none !important;
     }
     .filter-btn:hover { color: rgba(255,255,255,1); }
     .filter-menu {
@@ -343,9 +368,6 @@
     <button class="np-toggle" id="theme-btn" aria-label="Modo oscuro / claro">
       <div class="knob"></div>
     </button>
-  </nav>
-
-  <div class="filter-float">
     <button id="filter-btn" class="filter-btn" aria-expanded="false">Filtros</button>
     <div id="filter-menu" class="filter-menu" hidden>
       <button type="button" class="filter-option active">Todas</button>
@@ -353,7 +375,7 @@
       <button type="button" class="filter-option">Fabricación Digital</button>
       <button type="button" class="filter-option">Prototipado</button>
     </div>
-  </div>
+  </nav>
 
   <!-- ESCENA -->
   <div id="scene">
