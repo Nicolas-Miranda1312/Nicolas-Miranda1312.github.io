@@ -438,7 +438,13 @@ function applyFilter(filter) {
     filteredProjects = nextProjects;
     arcWrap.style.transition = 'none';
     buildCards();
-    if (useListMode) resetListLayout();
+    if (useListMode) {
+      resetListLayout();
+      listSpeed = targetListSpeed = BASE_LIST_SPEED;
+      listOffset = 0;
+    } else {
+      speed = targetSpeed = BASE_SPEED;
+    }
     offset = 0;
     arcWrap.style.transform = 'translateX(50px)';
     arcWrap.style.opacity = '0';
@@ -446,7 +452,6 @@ function applyFilter(filter) {
       arcWrap.style.transition = 'transform .35s ease, opacity .35s ease';
       arcWrap.style.transform = 'translateX(0)';
       arcWrap.style.opacity = '1';
-      if (useListMode) listOffset = 0;
     });
   }, 300);
 }
@@ -480,7 +485,11 @@ const BASE_SPEED = 0.0007;
 let speed = BASE_SPEED, targetSpeed = BASE_SPEED;
 let wheelTimer;
 
-const LIST_SPEED = 1.25; // px por frame aproximadamente
+const BASE_LIST_SPEED = 0.45; // px por frame para categorías
+let listSpeed = BASE_LIST_SPEED;
+let targetListSpeed = BASE_LIST_SPEED;
+const SPEED_BOOST = 0.0055;
+const LIST_SPEED_BOOST = 1.2;
 const LIST_GAP = 40;
 let listOffset = 0;
 let listLayout = { baseX: 0, step: 0, totalWidth: 0, cardWidth: 300, cardHeight: 480 };
@@ -516,8 +525,10 @@ function resetListLayout() {
 function positionListCards() {
   if (!cardEls.length || listLayout.totalWidth <= 0) return;
 
-  listOffset += LIST_SPEED;
+  listSpeed += (targetListSpeed - listSpeed) * 0.08;
+  listOffset += listSpeed;
   if (listOffset >= listLayout.totalWidth) listOffset -= listLayout.totalWidth;
+  if (listOffset < 0) listOffset += listLayout.totalWidth;
 
   const screenW = window.innerWidth;
   const total = listLayout.totalWidth;
@@ -558,11 +569,11 @@ function positionCards() {
 }
 
 (function loop() {
-  speed += (targetSpeed - speed) * 0.05;
-  offset += speed;
   if (currentFilter !== 'Todas') {
     positionListCards();
   } else {
+    speed += (targetSpeed - speed) * 0.05;
+    offset += speed;
     positionCards();
   }
   requestAnimationFrame(loop);
@@ -571,9 +582,22 @@ function positionCards() {
 /* Scroll → acelerar (escritorio) */
 window.addEventListener('wheel', e => {
   if (document.getElementById('detail').classList.contains('open')) return;
-  targetSpeed = BASE_SPEED + (e.deltaY > 0 ? 1 : -1) * 0.0055;
+  const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+  const direction = delta > 0 ? 1 : -1;
+  if (currentFilter !== 'Todas') {
+    targetListSpeed = direction > 0
+      ? BASE_LIST_SPEED + LIST_SPEED_BOOST
+      : -(BASE_LIST_SPEED + LIST_SPEED_BOOST);
+  } else {
+    targetSpeed = direction > 0
+      ? BASE_SPEED + SPEED_BOOST
+      : -(BASE_SPEED + SPEED_BOOST);
+  }
   clearTimeout(wheelTimer);
-  wheelTimer = setTimeout(() => { targetSpeed = BASE_SPEED; }, 320);
+  wheelTimer = setTimeout(() => {
+    targetSpeed = BASE_SPEED;
+    targetListSpeed = BASE_LIST_SPEED;
+  }, 320);
 }, { passive: true });
 
 /* Touch → horizontal controla dirección (móvil/tablet) */
@@ -585,9 +609,21 @@ window.addEventListener('touchmove', e => {
   const dy = e.touches[0].clientY - ty0;
   tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
   if (Math.abs(dx) > Math.abs(dy)) {
-    targetSpeed = BASE_SPEED + (dx > 0 ? 1 : -1) * 0.006;
+    const direction = dx > 0 ? 1 : -1;
+    if (currentFilter !== 'Todas') {
+      targetListSpeed = direction > 0
+        ? BASE_LIST_SPEED + LIST_SPEED_BOOST
+        : -(BASE_LIST_SPEED + LIST_SPEED_BOOST);
+    } else {
+      targetSpeed = direction > 0
+        ? BASE_SPEED + SPEED_BOOST
+        : -(BASE_SPEED + SPEED_BOOST);
+    }
     clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { targetSpeed = BASE_SPEED; }, 400);
+    wheelTimer = setTimeout(() => {
+      targetSpeed = BASE_SPEED;
+      targetListSpeed = BASE_LIST_SPEED;
+    }, 400);
   }
 }, { passive: true });
 
