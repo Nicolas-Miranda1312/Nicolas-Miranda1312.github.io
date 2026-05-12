@@ -291,18 +291,37 @@ const PROJECTS = [
     palette: ['#B5935A', '#F2E9D8', '#3D1F00', '#FFD700'],
     style: 'dots',
   },
+  {
+    num: '16',
+    name: 'Interfaz Táctil',
+    year: '2026',
+    tags: ['Interacción', 'Experiencia', 'Pantalla'],
+    tools: ['Figma', 'Prototipado', 'Arduino', 'Sensores'],
+    desc: 'Interfaz táctil para un módulo de consulta en espacio público, diseñada para accesibilidad y flujo rápido de información.',
+    process: [
+      { t: 'Investigación', d: 'Mapa de recorridos de usuario y entrevistas para definir necesidades de consulta rápida.' },
+      { t: 'Prototipo',   d: 'Interfaz responsive con feedback háptico en prototipo de baja fidelidad.' },
+      { t: 'Validación',  d: 'Pruebas en campo con 30 usuarios y ajustes de contraste y tamaño de objetivo.' },
+      { t: 'Entrega',     d: 'Diseño para producción de 10 dispositivos interactivos para espacios culturales.' },
+    ],
+    cover: '', hero: '', gallery: [],
+    coverEmoji: '🖥️', heroEmoji: '🖥️',
+    palette: ['#0A9396', '#94D2BD', '#EE9B00', '#001219'],
+    style: 'grid',
+  },
 ];
 
 /* ═══════════════════════
    FILTROS
    ═══════════════════════ */
 const FILTER_MAP = {
-  'Interacción Digital': proj => proj.tags.includes('Interacción Digital'),
-  'Fabricación Digital': proj => proj.tags.includes('Fabricación Digital'),
-  'Prototipado': proj => proj.tags.includes('Prototipado'),
+  'Todas': () => true,
+  'Interacción': proj => proj.tags.some(t => /interacción|identidad|packaging|inclusivo|iluminación|iluminac|señalética|visual|experiencia/i.test(t)),
+  'Fabricación Digital': proj => proj.tags.some(t => /cnc|láser|laser|fabricación|producción|madera|acero|paramétrico|corte|resina|extrusión|doblado|aluminio|bronce|fibra carbono|impresión|inyección/i.test(t)),
+  'Prototipado': proj => proj.tags.some(t => /cerámica|textil|producto|bioplástico|bio|accesorios|cordura|costura|mecanismo|torno|prototipado|serigrafía|molde|latón|taller/i.test(t)),
 };
 
-let currentFilter = null;
+let currentFilter = 'Todas';
 
 /* ═══════════════════════
    GRÁFICAS GENERATIVAS
@@ -369,6 +388,7 @@ function buildCards() {
     const card = document.createElement('div');
     card.className = 'arc-card';
     card.dataset.idx = i;
+    if (currentFilter !== 'Todas') card.classList.add('list-card');
 
     // Imagen o canvas generativo
     if (proj.cover) {
@@ -400,13 +420,39 @@ function buildCards() {
 }
 
 function applyFilter(filter) {
-  currentFilter = filter;
-  filteredProjects = filter ? PROJECTS.filter(FILTER_MAP[filter]) : PROJECTS;
-  buildCards();
-  offset = 0; // reset position
+  currentFilter = filter || 'Todas';
+  const nextProjects = (currentFilter === 'Todas')
+    ? PROJECTS
+    : PROJECTS.filter(FILTER_MAP[currentFilter]);
+
+  const useListMode = currentFilter !== 'Todas';
+  const scene = document.getElementById('scene');
+  scene.classList.toggle('list-mode', useListMode);
+  arcWrap.classList.toggle('list-mode', useListMode);
+
+  arcWrap.style.transition = 'transform .35s ease, opacity .35s ease';
+  arcWrap.style.transform = 'translateX(-50px)';
+  arcWrap.style.opacity = '0';
+
+  setTimeout(() => {
+    filteredProjects = nextProjects;
+    arcWrap.style.transition = 'none';
+    buildCards();
+    if (useListMode) resetListLayout();
+    offset = 0;
+    arcWrap.style.transform = 'translateX(50px)';
+    arcWrap.style.opacity = '0';
+    requestAnimationFrame(() => {
+      arcWrap.style.transition = 'transform .35s ease, opacity .35s ease';
+      arcWrap.style.transform = 'translateX(0)';
+      arcWrap.style.opacity = '1';
+      if (useListMode) listOffset = 0;
+    });
+  }, 300);
 }
 
 buildCards(); // inicializar
+if (currentFilter !== 'Todas') resetListLayout();
 
 function makeGenCanvas(proj, w, h) {
   const cv = document.createElement('canvas');
@@ -426,6 +472,7 @@ function getArcParams() {
 let { radius: ARC_RADIUS, arcHalf: ARC_HALF } = getArcParams();
 window.addEventListener('resize', () => {
   const p = getArcParams(); ARC_RADIUS = p.radius; ARC_HALF = p.arcHalf;
+  if (currentFilter !== 'Todas') resetListLayout();
 });
 
 let offset = 0;
@@ -433,7 +480,60 @@ const BASE_SPEED = 0.0007;
 let speed = BASE_SPEED, targetSpeed = BASE_SPEED;
 let wheelTimer;
 
+const LIST_SPEED = 1.25; // px por frame aproximadamente
+const LIST_GAP = 40;
+let listOffset = 0;
+let listLayout = { baseX: 0, step: 0, totalWidth: 0, cardWidth: 300, cardHeight: 480 };
+
+function resetListLayout() {
+  if (!cardEls.length) return;
+  const cardRect = cardEls[0].getBoundingClientRect();
+  const cardWidth = cardRect.width || 300;
+  const cardHeight = cardRect.height || 480;
+  const step = cardWidth + LIST_GAP;
+  const total = N * step;
+  const baseX = (window.innerWidth - total) / 2;
+
+  listLayout = {
+    baseX,
+    step,
+    totalWidth: total,
+    cardWidth,
+    cardHeight,
+  };
+  listOffset = 0;
+
+  cardEls.forEach((card, i) => {
+    card.style.position = 'absolute';
+    card.style.top = '50%';
+    card.style.transform = 'translateY(-50%)';
+    const x = baseX + i * step;
+    card.style.left = `${x}px`;
+    card.style.display = '';
+  });
+}
+
+function positionListCards() {
+  if (!cardEls.length || listLayout.totalWidth <= 0) return;
+
+  listOffset += LIST_SPEED;
+  if (listOffset >= listLayout.totalWidth) listOffset -= listLayout.totalWidth;
+
+  const screenW = window.innerWidth;
+  const total = listLayout.totalWidth;
+
+  cardEls.forEach((card, i) => {
+    let x = listLayout.baseX + i * listLayout.step + listOffset;
+    while (x > screenW) x -= total;
+    while (x < -listLayout.cardWidth) x += total;
+    card.style.left = `${x}px`;
+    card.style.display = '';
+    card.classList.remove('is-center');
+  });
+}
+
 function positionCards() {
+  if (currentFilter !== 'Todas') return;
   const TWO_PI = Math.PI * 2;
   let centerIdx = -1, minDist = Infinity;
   cardEls.forEach((card, i) => {
@@ -460,7 +560,11 @@ function positionCards() {
 (function loop() {
   speed += (targetSpeed - speed) * 0.05;
   offset += speed;
-  positionCards();
+  if (currentFilter !== 'Todas') {
+    positionListCards();
+  } else {
+    positionCards();
+  }
   requestAnimationFrame(loop);
 })();
 
