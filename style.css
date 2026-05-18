@@ -146,6 +146,23 @@ html.dark .nav-pill .np-toggle .knob {
   background: #fff;
 }
 
+.home-title {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 850;
+  font-family: "Jersey 10", sans-serif;
+  font-size: clamp(25rem, 30vw, 27rem);
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* Dark toggle */
 .dark-toggle {
   width: 44px; height: 24px; border-radius: 100px;
