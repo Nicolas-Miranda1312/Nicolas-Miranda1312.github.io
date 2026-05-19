@@ -39,6 +39,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-display);
+  font-size: 18px;
   line-height: 1.65;
   transition: background .4s var(--ease), color .4s var(--ease);
   cursor: none;
