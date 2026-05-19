@@ -152,8 +152,10 @@ html.dark .nav-pill .np-toggle .knob {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 850;
-  font-family: "Jersey 10", sans-serif;
-  font-size: clamp(25rem, 30vw, 27rem);
+  font-family: "Jersey 10", var(--font-display), sans-serif;
+  font-size: clamp(7rem, 18vw, 13rem);
+  line-height: 0.9;
+  max-width: 92vw;
   font-weight: 400;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -161,6 +163,20 @@ html.dark .nav-pill .np-toggle .knob {
   text-align: center;
   pointer-events: none;
   user-select: none;
+}
+
+@media (max-width: 768px) {
+  .home-title {
+    top: 46%;
+    font-size: clamp(5.5rem, 22vw, 10rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .home-title {
+    top: 44%;
+    font-size: clamp(4.5rem, 24vw, 8.5rem);
+  }
 }
 
 /* Dark toggle */
