@@ -29,10 +29,10 @@ const PROJECTS = [
        Puedes cambiar estas URLs por archivos locales en assets/images.
        Si la imagen no existe, se muestra un emoji de placeholder.
        ────────────────────────────────────────────────────────── */
-    cover:   'https://picsum.photos/seed/mesa/900/1200',
-    hero:    'https://picsum.photos/seed/mesa-hero/1400/900',
+    cover:   'projects/proyecto-01/01.jpg',
+    hero:    'projects/proyecto-01/01.jpg',
     gallery: [
-      'https://picsum.photos/seed/mesa-g1/900/1200',
+      'projects/proyecto-01/01.jpg',
       'https://picsum.photos/seed/mesa-g2/900/1200',
       'https://picsum.photos/seed/mesa-g3/900/1200',
     ],
