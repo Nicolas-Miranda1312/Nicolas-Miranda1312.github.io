@@ -26,14 +26,16 @@ const PROJECTS = [
        hero:    imagen grande en la vista detalle
        gallery: array de imágenes de la galería del proyecto
 
-       Rutas relativas desde trabajos.html:
-         'assets/images/p01-cover.jpg'
-
+       Puedes cambiar estas URLs por archivos locales en assets/images.
        Si la imagen no existe, se muestra un emoji de placeholder.
        ────────────────────────────────────────────────────────── */
-    cover:   '', // 'assets/images/p01-cover.jpg'
-    hero:    '', // 'assets/images/p01-hero.jpg'
-    gallery: [], // ['assets/images/p01-01.jpg', 'assets/images/p01-02.jpg']
+    cover:   'https://picsum.photos/seed/mesa/900/1200',
+    hero:    'https://picsum.photos/seed/mesa-hero/1400/900',
+    gallery: [
+      'https://picsum.photos/seed/mesa-g1/900/1200',
+      'https://picsum.photos/seed/mesa-g2/900/1200',
+      'https://picsum.photos/seed/mesa-g3/900/1200',
+    ],
     coverEmoji: '🪵',
     heroEmoji:  '🪵',
     palette: ['#FF6B35', '#1B4332', '#F9C74F', '#023E8A'],
@@ -52,7 +54,13 @@ const PROJECTS = [
       { t: 'Esmalte',    d: 'Formulación propia con ceniza volcánica local.' },
       { t: 'Edición',    d: '30 piezas numeradas y documentadas.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'https://picsum.photos/seed/ceramica/900/1200',
+    hero: 'https://picsum.photos/seed/ceramica-hero/1400/900',
+    gallery: [
+      'https://picsum.photos/seed/ceramica-g1/900/1200',
+      'https://picsum.photos/seed/ceramica-g2/900/1200',
+      'https://picsum.photos/seed/ceramica-g3/900/1200',
+    ],
     coverEmoji: '🏺', heroEmoji: '🏺',
     palette: ['#A8DADC', '#E63946', '#457B9D', '#F1FAEE'],
     style: 'dots',
@@ -70,7 +78,13 @@ const PROJECTS = [
       { t: 'Prueba',     d: 'Instalación piloto en Matucana 100, Santiago.' },
       { t: 'Variantes',  d: 'Powder coat en 6 colores estándar.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'https://picsum.photos/seed/modulo/900/1200',
+    hero: 'https://picsum.photos/seed/modulo-hero/1400/900',
+    gallery: [
+      'https://picsum.photos/seed/modulo-g1/900/1200',
+      'https://picsum.photos/seed/modulo-g2/900/1200',
+      'https://picsum.photos/seed/modulo-g3/900/1200',
+    ],
     coverEmoji: '⚙️', heroEmoji: '⚙️',
     palette: ['#FFBE0B', '#FB5607', '#FF006E', '#3A0CA3'],
     style: 'grid',
@@ -88,7 +102,13 @@ const PROJECTS = [
       { t: 'Producción', d: 'Fabricable en taller pequeño. 45 min/unidad.' },
       { t: 'Acabado',    d: 'Pintura electrostática en 8 colores.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'https://picsum.photos/seed/silla/900/1200',
+    hero: 'https://picsum.photos/seed/silla-hero/1400/900',
+    gallery: [
+      'https://picsum.photos/seed/silla-g1/900/1200',
+      'https://picsum.photos/seed/silla-g2/900/1200',
+      'https://picsum.photos/seed/silla-g3/900/1200',
+    ],
     coverEmoji: '🪑', heroEmoji: '🪑',
     palette: ['#06D6A0', '#118AB2', '#073B4C', '#FFD166'],
     style: 'lines',
