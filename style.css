@@ -3,6 +3,14 @@
    Variables → Reset → Componentes → Utilidades → Dark mode
    ============================================================ */
 
+@font-face {
+  font-family: 'Jersey 10';
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://fonts.cdnfonts.com/s/140214/Jersey10-Regular.woff") format("woff");
+  font-display: swap;
+}
+
 /* ── VARIABLES ── */
 :root {
   --bg:        #FFFFFF;
@@ -14,6 +22,7 @@
   --card-bg:   rgba(17,16,14,.04);
 
   --font-display: 'Familjen Grotesk', sans-serif;
+  --font-jersey:  'Jersey 10', var(--font-display), sans-serif;
   --font-body:    'Instrument Serif', Georgia, serif;
   --font-mono:    'DM Mono', monospace;
 
@@ -49,7 +58,7 @@ img { display: block; max-width: 100%; }
 button { font-family: inherit; cursor: none; border: none; background: none; }
 
 .jersey-10-regular {
-  font-family: "Jersey 10", sans-serif;
+  font-family: var(--font-jersey);
   font-weight: 400;
   font-style: normal;
 }
@@ -153,7 +162,7 @@ html.dark .nav-pill .np-toggle .knob {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 850;
-  font-family: "Jersey 10", var(--font-display), sans-serif;
+  font-family: var(--font-jersey);
   font-size: clamp(7rem, 18vw, 13rem);
   line-height: 0.9;
   max-width: 92vw;
@@ -235,7 +244,7 @@ html.dark .dark-toggle .knob { transform: translateX(20px); }
   color: var(--accent); margin-bottom: .9rem;
 }
 .sec-title {
-  font-family: "Jersey 10", sans-serif;
+  font-family: var(--font-jersey);
   font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 400;
   font-style: normal;
@@ -247,7 +256,7 @@ html.dark .dark-toggle .knob { transform: translateX(20px); }
 .about-intro,
 .exp-role,
 .exp-place {
-  font-family: "Jersey 10", sans-serif;
+  font-family: var(--font-jersey);
   font-weight: 400;
   font-style: normal;
 }
