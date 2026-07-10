@@ -339,6 +339,7 @@ const FILTER_MAP = {
   'Interacción': proj => proj.tags.some(t => /interacción|identidad|packaging|inclusivo|iluminación|iluminac|señalética|visual|experiencia/i.test(t)),
   'Fabricación Digital': proj => proj.tags.some(t => /cnc|láser|laser|fabricación|producción|madera|acero|paramétrico|corte|resina|extrusión|doblado|aluminio|bronce|fibra carbono|impresión|inyección/i.test(t)),
   'Prototipado': proj => proj.tags.some(t => /cerámica|textil|producto|bioplástico|bio|accesorios|cordura|costura|mecanismo|torno|prototipado|serigrafía|molde|latón|taller/i.test(t)),
+  'Objetos funcionales': proj => proj.tags.some(t => /cerámica|textil|producto|bioplástico|bio|accesorios|cordura|costura|mecanismo|torno|prototipado|serigrafía|molde|latón|taller/i.test(t)),
 };
 
 let currentFilter = 'Todas';
