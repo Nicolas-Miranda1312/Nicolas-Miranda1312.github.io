@@ -163,7 +163,7 @@ html.dark .nav-pill .np-toggle .knob {
   transform: translate(-50%, -50%);
   z-index: 850;
   font-family: var(--font-jersey);
-  font-size: clamp(7rem, 18vw, 13rem);
+  font-size: clamp(23.5rem, 35vw, 30rem);
   line-height: 0.9;
   max-width: 92vw;
   font-weight: 400;
