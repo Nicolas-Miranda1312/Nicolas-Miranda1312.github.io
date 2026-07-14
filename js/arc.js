@@ -142,7 +142,16 @@ const PROJECTS = [
       { t: 'Estructura', d: '3 ligamentos distintos para resistencias diferenciadas.' },
       { t: 'Uso',      d: 'Prototipo instalado en banca de espacio público.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'proyecto-06/01.jpg',
+    hero: 'proyecto-06/02.jpg',
+    gallery: [
+      'proyecto-06/01.jpg',
+      'proyecto-06/02.jpg',
+      'proyecto-06/03.jpg',
+      'proyecto-06/04.jpg',
+      'proyecto-06/05.jpg',
+      'proyecto-06/06.jpg',
+    ],
     coverEmoji: '🧵', heroEmoji: '🧵',
     palette: ['#52B788', '#B7E4C7', '#1B4332', '#D8F3DC'],
     style: 'dots',
@@ -710,6 +719,10 @@ function openDetail(proj) {
       img.src = proj.gallery[v];
       img.alt = proj.name;
       img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openGalleryLightbox(img.src, proj.name);
+      });
       img.onerror = () => {
         const ph = document.createElement('div');
         ph.className = 'det-gallery-placeholder';
@@ -755,7 +768,51 @@ function openDetail(proj) {
   });
 }
 
+let galleryLightbox = null;
+
+function ensureGalleryLightbox() {
+  if (galleryLightbox) return galleryLightbox;
+
+  galleryLightbox = document.createElement('div');
+  galleryLightbox.className = 'gallery-lightbox';
+  galleryLightbox.innerHTML = `
+    <button type="button" class="gallery-lightbox-close" aria-label="Cerrar vista ampliada">✕</button>
+    <img class="gallery-lightbox-img" alt="" />
+  `;
+
+  galleryLightbox.addEventListener('click', (e) => {
+    if (e.target === galleryLightbox || e.target.classList.contains('gallery-lightbox-close')) {
+      closeGalleryLightbox();
+    }
+  });
+
+  document.body.appendChild(galleryLightbox);
+  return galleryLightbox;
+}
+
+function openGalleryLightbox(src, alt) {
+  const lb = ensureGalleryLightbox();
+  const img = lb.querySelector('.gallery-lightbox-img');
+  if (!img) return;
+
+  img.src = src;
+  img.alt = alt || 'Imagen ampliada';
+  document.body.classList.add('lightbox-open');
+  lb.classList.add('open');
+}
+
+function closeGalleryLightbox() {
+  if (!galleryLightbox) return;
+  galleryLightbox.classList.remove('open');
+  document.body.classList.remove('lightbox-open');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeGalleryLightbox();
+});
+
 document.getElementById('det-close').addEventListener('click', () => {
+  closeGalleryLightbox();
   document.getElementById('detail').classList.remove('open');
   document.getElementById('det-close').classList.remove('show');
 });
