@@ -668,9 +668,10 @@ function openDetail(proj) {
   const closeBtn= document.getElementById('det-close');
 
   // Hero HTML
+  const heroClass = proj.num === '03' ? 'det-hero is-vertical' : 'det-hero';
   const heroHTML = proj.hero
-    ? `<div class="det-hero"><img src="${proj.hero}" class="det-hero-img" alt="${proj.name}" onerror="this.parentNode.innerHTML='<div class=det-hero-placeholder>${proj.heroEmoji}</div>'"/></div>`
-    : `<div class="det-hero"><div class="det-hero-placeholder">${proj.heroEmoji}</div></div>`;
+    ? `<div class="${heroClass}"><img src="${proj.hero}" class="det-hero-img" alt="${proj.name}" onerror="this.parentNode.innerHTML='<div class=det-hero-placeholder>${proj.heroEmoji}</div>'"/></div>`
+    : `<div class="${heroClass}"><div class="det-hero-placeholder">${proj.heroEmoji}</div></div>`;
 
   // Estructura desktop: top en 2 columnas
   cnt.innerHTML = `
