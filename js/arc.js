@@ -77,7 +77,7 @@ const PROJECTS = [
       { t: 'Variantes',  d: 'Powder coat en 6 colores estándar.' },
     ],
     cover: 'https://picsum.photos/seed/modulo/900/1200',
-    hero: 'https://picsum.photos/seed/modulo-hero/1400/900',
+    hero: 'https://picsum.photos/seed/modulo-hero/900/1400',
     gallery: [
       'https://picsum.photos/seed/modulo-g1/900/1200',
       'https://picsum.photos/seed/modulo-g2/900/1200',
