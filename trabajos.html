@@ -104,11 +104,13 @@
       margin-bottom: 4rem;
     }
     .det-hero {
-      width: 100%; aspect-ratio: 16/9;
+      width: min(100%, 420px);
+      aspect-ratio: 3/4;
       border-radius: 16px; overflow: hidden;
       background: var(--card-bg);
       box-shadow: 0 12px 48px rgba(0,0,0,.18);
       display: flex; align-items: center; justify-content: center;
+      margin: 0 auto;
     }
     .det-hero-img { width:100%; height:100%; object-fit:cover; display:block; }
     .det-hero-placeholder {
