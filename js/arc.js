@@ -30,11 +30,22 @@ const PROJECTS = [
        Si la imagen no existe, se muestra un emoji de placeholder.
        ────────────────────────────────────────────────────────── */
     cover:   'proyecto-01/01.jpg',
-    hero:    'proyecto-01/01.jpg',
+    hero:    'proyecto-01/03.jpg',
     gallery: [
       'proyecto-01/01.jpg',
-      'https://picsum.photos/seed/mesa-g2/900/1200',
-      'https://picsum.photos/seed/mesa-g3/900/1200',
+      'proyecto-01/02.jpg',
+      'proyecto-01/03.jpg',
+      'proyecto-01/04.jpg',
+      'proyecto-01/05.jpg',
+      'proyecto-01/06.jpg',
+      'proyecto-01/07.jpg',
+      'proyecto-01/08.jpg',
+      'proyecto-01/09.jpg',
+      'proyecto-01/10.jpg',
+      'proyecto-01/12.jpg',
+      'proyecto-01/13.jpg',
+      'proyecto-01/14.jpg',
+      'proyecto-01/15.jpg',
     ],
     coverEmoji: '🪵',
     heroEmoji:  '🪵',
@@ -55,9 +66,14 @@ const PROJECTS = [
       { t: 'Edición',    d: '30 piezas numeradas y documentadas.' },
     ],
     cover: 'proyecto-02/01.jpg',
-    hero: 'proyecto-02/01.jpg',
+    hero: 'proyecto-02/03.jpg',
     gallery: [
       'proyecto-02/01.jpg',
+      'proyecto-02/02.jpg',
+      'proyecto-02/03.jpg',
+      'proyecto-02/04.jpg',
+      'proyecto-02/05.jpg',
+      'proyecto-02/06.jpg',
     ],
     coverEmoji: '🏺', heroEmoji: '🏺',
     palette: ['#A8DADC', '#E63946', '#457B9D', '#F1FAEE'],
@@ -104,12 +120,15 @@ const PROJECTS = [
       { t: 'Producción', d: 'Fabricable en taller pequeño. 45 min/unidad.' },
       { t: 'Acabado',    d: 'Pintura electrostática en 8 colores.' },
     ],
-    cover: 'https://picsum.photos/seed/silla/900/1200',
-    hero: 'https://picsum.photos/seed/silla-hero/1400/900',
+    cover: 'proyecto-04/01.jpg',
+    hero: 'proyecto-04/03.jpg',
     gallery: [
-      'https://picsum.photos/seed/silla-g1/900/1200',
-      'https://picsum.photos/seed/silla-g2/900/1200',
-      'https://picsum.photos/seed/silla-g3/900/1200',
+      'proyecto-04/01.jpg',
+      'proyecto-04/02.jpg',
+      'proyecto-04/03.jpg',
+      'proyecto-04/04.jpg',
+      'proyecto-04/05.jpg',
+      'proyecto-04/06.jpg',
     ],
     coverEmoji: '🪑', heroEmoji: '🪑',
     palette: ['#06D6A0', '#118AB2', '#073B4C', '#FFD166'],
@@ -173,7 +192,18 @@ const PROJECTS = [
       { t: 'Corte',     d: 'Patrón generativo. Cada pieza es única.' },
       { t: 'Montaje',   d: 'Sistema de costura manual visible como detalle.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'proyecto-07/01.jpg',
+    hero: 'proyecto-07/2.jpg',
+    gallery: [
+      'proyecto-07/01.jpg',
+      'proyecto-07/2.jpg',
+      'proyecto-07/03.jpg',
+      'proyecto-07/04.jpg',
+      'proyecto-07/05.jpg',
+      'proyecto-07/06.jpg',
+      'proyecto-07/07.jpg',
+      'proyecto-07/08.jpg',
+    ],
     coverEmoji: '💡', heroEmoji: '💡',
     palette: ['#D4A373', '#CCD5AE', '#E9EDC9', '#FEFAE0'],
     style: 'grid',
@@ -701,7 +731,7 @@ function openDetail(proj) {
   const closeBtn= document.getElementById('det-close');
 
   // Hero HTML
-  const heroClass = proj.num === '03' ? 'det-hero is-vertical' : 'det-hero';
+  const heroClass = (proj.num === '03' || proj.num === '07') ? 'det-hero is-vertical' : 'det-hero';
   const heroHTML = proj.hero
     ? `<div class="${heroClass}"><img src="${proj.hero}" class="det-hero-img" alt="${proj.name}" onerror="this.parentNode.innerHTML='<div class=det-hero-placeholder>${proj.heroEmoji}</div>'"/></div>`
     : `<div class="${heroClass}"><div class="det-hero-placeholder">${proj.heroEmoji}</div></div>`;
