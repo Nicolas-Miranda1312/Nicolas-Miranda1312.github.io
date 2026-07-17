@@ -576,17 +576,25 @@ window.addEventListener('resize', () => {
 });
 
 let offset = 0;
-const BASE_SPEED = 0.0007;
+const BASE_SPEED = 0.0010;
 let speed = BASE_SPEED, targetSpeed = BASE_SPEED;
 let wheelTimer;
 
-const BASE_LIST_SPEED = 0.45; // px por frame para categorías
+const BASE_LIST_SPEED = 0.100; // px por frame para categorías
 let listSpeed = BASE_LIST_SPEED;
 let targetListSpeed = BASE_LIST_SPEED;
-const SPEED_BOOST = 0.0055;
-const LIST_SPEED_BOOST = 1.2;
+const SPEED_BOOST = 0.0080;
+const LIST_SPEED_BOOST = 2.4;
 const LIST_GAP = 40;
-let listOffset = 0;
+let galleryScrollOffset = 0;
+let galleryScrollSpeed = 0;
+let galleryTargetScrollSpeed = 0;
+let galleryScrollTimer;
+let galleryActiveTrack = null;
+let galleryLoopFrame = null;
+const GALLERY_BASE_SPEED = 0.85;
+const GALLERY_SPEED_BOOST = 2.2;
+const GALLERY_FRICTION = 0.08;let listOffset = 0;
 let listLayout = { baseX: 0, step: 0, totalWidth: 0, cardWidth: 300, cardHeight: 480 };
 
 function resetListLayout() {
@@ -615,6 +623,41 @@ function resetListLayout() {
     card.style.left = `${x}px`;
     card.style.display = '';
   });
+}
+
+function updateGalleryScroll() {
+  if (!galleryActiveTrack) return;
+  galleryScrollSpeed += (galleryTargetScrollSpeed - galleryScrollSpeed) * GALLERY_FRICTION;
+  galleryScrollOffset += galleryScrollSpeed;
+  const halfWidth = galleryActiveTrack.scrollWidth / 2;
+
+  if (halfWidth > 0) {
+    if (galleryScrollOffset >= halfWidth) galleryScrollOffset -= halfWidth;
+    if (galleryScrollOffset < 0) galleryScrollOffset += halfWidth;
+    galleryActiveTrack.style.transform = `translateX(-${galleryScrollOffset}px)`;
+  }
+}
+
+function startGalleryLoop() {
+  if (galleryLoopFrame) return;
+  const tick = () => {
+    updateGalleryScroll();
+    galleryLoopFrame = requestAnimationFrame(tick);
+  };
+  galleryLoopFrame = requestAnimationFrame(tick);
+}
+
+function stopGalleryLoop() {
+  if (galleryLoopFrame) {
+    cancelAnimationFrame(galleryLoopFrame);
+    galleryLoopFrame = null;
+  }
+}
+
+function isPointerOverGallery(clientX, clientY) {
+  if (!galleryActiveTrack) return false;
+  const rect = galleryActiveTrack.getBoundingClientRect();
+  return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
 }
 
 function positionListCards() {
@@ -676,7 +719,23 @@ function positionCards() {
 
 /* Scroll → acelerar (escritorio) */
 window.addEventListener('wheel', e => {
-  if (document.getElementById('detail').classList.contains('open')) return;
+  const detail = document.getElementById('detail');
+  const isOverGallery = galleryActiveTrack && detail.classList.contains('open') && isPointerOverGallery(e.clientX, e.clientY);
+
+  if (isOverGallery) {
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const direction = delta > 0 ? 1 : -1;
+    galleryTargetScrollSpeed = direction > 0
+      ? GALLERY_BASE_SPEED + GALLERY_SPEED_BOOST
+      : -(GALLERY_BASE_SPEED + GALLERY_SPEED_BOOST);
+    clearTimeout(galleryScrollTimer);
+    galleryScrollTimer = setTimeout(() => {
+      galleryTargetScrollSpeed = GALLERY_BASE_SPEED;
+    }, 320);
+    e.preventDefault();
+    return;
+  }
+  if (detail.classList.contains('open')) return;
   const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
   const direction = delta > 0 ? 1 : -1;
   if (currentFilter !== 'Todas') {
@@ -693,13 +752,31 @@ window.addEventListener('wheel', e => {
     targetSpeed = BASE_SPEED;
     targetListSpeed = BASE_LIST_SPEED;
   }, 320);
-}, { passive: true });
+}, { passive: false });
 
 /* Touch → horizontal controla dirección (móvil/tablet) */
 let tx0 = 0, ty0 = 0;
 window.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }, { passive: true });
 window.addEventListener('touchmove', e => {
-  if (document.getElementById('detail').classList.contains('open')) return;
+  const detail = document.getElementById('detail');
+  if (detail.classList.contains('open') && galleryActiveTrack && isPointerOverGallery(e.touches[0].clientX, e.touches[0].clientY)) {
+    const dx = e.touches[0].clientX - tx0;
+    const dy = e.touches[0].clientY - ty0;
+    tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      const direction = dx > 0 ? 1 : -1;
+      galleryTargetScrollSpeed = direction > 0
+        ? GALLERY_BASE_SPEED + GALLERY_SPEED_BOOST
+        : -(GALLERY_BASE_SPEED + GALLERY_SPEED_BOOST);
+      clearTimeout(galleryScrollTimer);
+      galleryScrollTimer = setTimeout(() => {
+        galleryTargetScrollSpeed = GALLERY_BASE_SPEED;
+      }, 400);
+      e.preventDefault();
+    }
+    return;
+  }
+  if (detail.classList.contains('open')) return;
   const dx = e.touches[0].clientX - tx0;
   const dy = e.touches[0].clientY - ty0;
   tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
@@ -720,7 +797,7 @@ window.addEventListener('touchmove', e => {
       targetListSpeed = BASE_LIST_SPEED;
     }, 400);
   }
-}, { passive: true });
+}, { passive: false });
 
 /* ═══════════════════════
    VISTA DETALLE
@@ -818,16 +895,14 @@ function openDetail(proj) {
     galEl.appendChild(clone);
   });
 
-  // Arrancar marquee tras pintar
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const halfW = galEl.scrollWidth / 2;
-      const speed = 55; // px/seg
-      galEl.style.setProperty('--det-dist', `-${halfW}px`);
-      galEl.style.setProperty('--det-dur', `${halfW / speed}s`);
-      galEl.classList.add('running');
-    });
-  });
+  // Arrancar scroll continuo de la galería tras pintar
+  galleryActiveTrack = galEl;
+  galleryScrollOffset = 0;
+  galleryScrollSpeed = 0;
+  galleryTargetScrollSpeed = GALLERY_BASE_SPEED;
+  galEl.style.transform = 'translateX(0px)';
+  galEl.style.willChange = 'transform';
+  startGalleryLoop();
 
   det.scrollTop = 0;
   requestAnimationFrame(() => {
@@ -879,11 +954,15 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeGalleryLightbox();
 });
 
-document.getElementById('det-close').addEventListener('click', () => {
+function closeDetailView() {
   closeGalleryLightbox();
   document.getElementById('detail').classList.remove('open');
   document.getElementById('det-close').classList.remove('show');
-});
+  stopGalleryLoop();
+  galleryActiveTrack = null;
+}
+
+document.getElementById('det-close').addEventListener('click', closeDetailView);
 
 // Exponer función para filtros desde HTML
 window.setArcFilter = applyFilter;

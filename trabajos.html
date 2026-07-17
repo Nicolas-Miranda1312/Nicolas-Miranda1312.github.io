@@ -179,15 +179,9 @@
     .det-gallery-track {
       display: flex; gap: 1rem;
       width: max-content;
+      will-change: transform;
     }
-    .det-gallery-track.running {
-      animation: det-scroll var(--det-dur, 30s) linear infinite;
-    }
-    .det-gallery-track:hover { animation-play-state: paused; }
-    @keyframes det-scroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(var(--det-dist, -50%)); }
-    }
+    .det-gallery-track:hover { cursor: grab; }
     .det-gallery-item {
       flex-shrink: 0;
       width: calc((100vw - 6rem) / 6);
