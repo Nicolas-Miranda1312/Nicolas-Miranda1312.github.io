@@ -398,7 +398,7 @@ const PROJECTS = [
       { t: 'Validación',  d: 'Pruebas en campo con 30 usuarios y ajustes de contraste y tamaño de objetivo.' },
       { t: 'Entrega',     d: 'Diseño para producción de 10 dispositivos interactivos para espacios culturales.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: '', coverVideo: 'proyecto-16/01.mp4', hero: '', gallery: [],
     coverEmoji: '🖥️', heroEmoji: '🖥️',
     palette: ['#0A9396', '#94D2BD', '#EE9B00', '#001219'],
     style: 'grid',
@@ -485,8 +485,24 @@ function buildCards() {
     card.dataset.idx = i;
     if (currentFilter !== 'Todas') card.classList.add('list-card');
 
-    // Imagen o canvas generativo
-    if (proj.cover) {
+    // Imagen, video o canvas generativo
+    if (proj.coverVideo) {
+      const video = document.createElement('video');
+      video.src = proj.coverVideo;
+      video.className = 'arc-card-video';
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.controls = false;
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.onerror = () => {
+        video.replaceWith(makeGenCanvas(proj, 320, 512));
+      };
+      card.appendChild(video);
+    } else if (proj.cover) {
       const img = document.createElement('img');
       img.src = proj.cover;
       img.className = 'arc-card-img';

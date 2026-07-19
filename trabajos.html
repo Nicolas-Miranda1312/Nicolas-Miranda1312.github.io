@@ -47,11 +47,27 @@
     }
 
     /* Imagen de portada de la tarjeta */
-    .arc-card-img {
+    .arc-card-img,
+    .arc-card-video {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
       pointer-events: none;
+      background: #fff;
+    }
+    .arc-card-video {
+      width: 100%;
+      height: 78%;
+      object-fit: contain;
+      object-position: center center;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      transform: translateY(8%);
+    }
+
+    .arc-card {
+      background: #fff;
     }
     /* Placeholder cuando no hay imagen */
     .arc-card-placeholder {
