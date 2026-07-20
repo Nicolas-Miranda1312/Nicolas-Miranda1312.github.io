@@ -30,7 +30,7 @@ const PROJECTS = [
        Si la imagen no existe, se muestra un emoji de placeholder.
        ────────────────────────────────────────────────────────── */
     cover:   'proyecto-01/01.jpg',
-    hero:    'proyecto-01/03.jpg',
+    hero:    'proyecto-01/02.jpg',
     gallery: [
       'proyecto-01/01.jpg',
       'proyecto-01/02.jpg',
@@ -66,7 +66,7 @@ const PROJECTS = [
       { t: 'Edición',    d: '30 piezas numeradas y documentadas.' },
     ],
     cover: 'proyecto-02/01.jpg',
-    hero: 'proyecto-02/03.jpg',
+    hero: 'proyecto-02/02.jpg',
     gallery: [
       'proyecto-02/01.jpg',
       'proyecto-02/02.jpg',
@@ -121,7 +121,7 @@ const PROJECTS = [
       { t: 'Acabado',    d: 'Pintura electrostática en 8 colores.' },
     ],
     cover: 'proyecto-04/01.jpg',
-    hero: 'proyecto-04/03.jpg',
+    hero: 'proyecto-04/02.jpg',
     gallery: [
       'proyecto-04/01.jpg',
       'proyecto-04/02.jpg',
@@ -193,7 +193,7 @@ const PROJECTS = [
       { t: 'Montaje',   d: 'Sistema de costura manual visible como detalle.' },
     ],
     cover: 'proyecto-07/01.jpg',
-    hero: 'proyecto-07/2.jpg',
+    hero: 'proyecto-07/02.jpg',
     gallery: [
       'proyecto-07/01.jpg',
       'proyecto-07/2.jpg',
@@ -250,7 +250,18 @@ const PROJECTS = [
       { t: 'Acabado',    d: 'Laca natural mate. Revela el grano interior.' },
       { t: 'Serie',      d: 'Edición de autor: 5 piezas firmadas.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'proyecto-09/01.jpg',
+    hero: 'proyecto-09/02.jpg',
+    gallery: [
+      'proyecto-09/01.jpg',
+      'proyecto-09/02.jpg',
+      'proyecto-09/03.jpg',
+      'proyecto-09/04.jpg',
+      'proyecto-09/05.jpg',
+      'proyecto-09/06.jpg',
+      'proyecto-09/07.jpg',
+      'proyecto-09/08.jpg',
+    ],
     coverEmoji: '🌿', heroEmoji: '🌿',
     palette: ['#E9C46A', '#F4A261', '#E76F51', '#264653'],
     style: 'mesh',
@@ -297,7 +308,19 @@ const PROJECTS = [
       { t: 'Braille',       d: 'Codificación validada por revisores certificados.' },
       { t: 'Instalación',   d: 'Piloto en Museo de Arte Precolombino, Santiago.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'proyecto-11/01.jpg',
+    hero: 'proyecto-11/02.jpg',
+    gallery: [
+      'proyecto-11/01.jpg',
+      'proyecto-11/02.jpg',
+      'proyecto-11/03.jpg',
+      'proyecto-11/04.jpg',
+      'proyecto-11/05.jpg',
+      'proyecto-11/06.jpg',
+      'proyecto-11/07.jpg',
+      'proyecto-11/08.jpg',
+      'proyecto-11/09.jpg',
+    ],
     coverEmoji: '🔡', heroEmoji: '🔡',
     palette: ['#C9B99A', '#A68A64', '#7D6037', '#3D2B1F'],
     style: 'grid',
@@ -315,7 +338,20 @@ const PROJECTS = [
       { t: 'Carga',        d: 'Resistencia: 800 kg/m². Peso: 8 kg.' },
       { t: 'Estado',       d: '3 unidades instaladas en Plaza Ñuñoa, Santiago.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'proyecto-12/01.jpg',
+    hero: 'proyecto-12/02.jpg',
+    gallery: [
+      'proyecto-12/01.jpg',
+      'proyecto-12/02.jpg',
+      'proyecto-12/03.jpg',
+      'proyecto-12/04.jpg',
+      'proyecto-12/05.jpg',
+      'proyecto-12/06.jpg',
+      'proyecto-12/07.jpg',
+      'proyecto-12/08.jpg',
+      'proyecto-12/09.jpg',
+      'proyecto-12/10.jpg',
+    ],
     coverEmoji: '🏙', heroEmoji: '🏙',
     palette: ['#023047', '#219EBC', '#8ECAE6', '#FFB703'],
     style: 'lines',
@@ -870,10 +906,11 @@ function openDetail(proj) {
 
   // Número base de ítems: los del proyecto o 6 generativos
   const count = (proj.gallery && proj.gallery.length > 0) ? proj.gallery.length : 6;
+  const isHorizontalGallery = ['09', '11', '12'].includes(proj.num);
 
   for (let v = 0; v < count; v++) {
     const wrap = document.createElement('div');
-    wrap.className = 'det-gallery-item';
+    wrap.className = `det-gallery-item${isHorizontalGallery ? ' is-horizontal' : ''}`;
 
     if (proj.gallery && proj.gallery[v]) {
       const img = document.createElement('img');
