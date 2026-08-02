@@ -147,7 +147,16 @@ const PROJECTS = [
       { t: 'Detalle',       d: 'Foil cobre en hot stamping. Tipografía propietaria.' },
       { t: 'Escala',        d: '12 piezas packaging + identidad digital + señalética.' },
     ],
-    cover: '', hero: '', gallery: [],
+    cover: 'proyecto-05/01.jpg',
+    hero: 'proyecto-05/02.jpg',
+    gallery: [
+      'proyecto-05/01.jpg',
+      'proyecto-05/02.jpg',
+      'proyecto-05/03.jpg',
+      'proyecto-05/04.jpg',
+      'proyecto-05/05.jpg',
+      'proyecto-05/06.jpg',
+    ],
     coverEmoji: '📦', heroEmoji: '📦',
     palette: ['#F72585', '#7209B7', '#3A0CA3', '#4CC9F0'],
     style: 'mesh',
@@ -193,7 +202,7 @@ const PROJECTS = [
       { t: 'Montaje',   d: 'Sistema de costura manual visible como detalle.' },
     ],
     cover: 'proyecto-07/01.jpg',
-    hero: 'proyecto-07/02.jpg',
+    hero: 'proyecto-07/2.jpg',
     gallery: [
       'proyecto-07/01.jpg',
       'proyecto-07/2.jpg',
@@ -434,7 +443,17 @@ const PROJECTS = [
       { t: 'Validación',  d: 'Pruebas en campo con 30 usuarios y ajustes de contraste y tamaño de objetivo.' },
       { t: 'Entrega',     d: 'Diseño para producción de 10 dispositivos interactivos para espacios culturales.' },
     ],
-    cover: '', coverVideo: 'proyecto-16/01.mp4', hero: '', gallery: [],
+    cover: '',
+    coverVideo: 'proyecto-16/01.mp4',
+    hero: 'proyecto-16/03.jpg',
+    gallery: [
+      'proyecto-16/02.jpg',
+      'proyecto-16/03.jpg',
+      'proyecto-16/04.jpg',
+      'proyecto-16/05.jpg',
+      'proyecto-16/06.jpg',
+      'proyecto-16/07.jpg',
+    ],
     coverEmoji: '🖥️', heroEmoji: '🖥️',
     palette: ['#0A9396', '#94D2BD', '#EE9B00', '#001219'],
     style: 'grid',
@@ -860,7 +879,7 @@ function openDetail(proj) {
   const closeBtn= document.getElementById('det-close');
 
   // Hero HTML
-  const heroClass = (proj.num === '03' || proj.num === '07') ? 'det-hero is-vertical' : 'det-hero';
+  const heroClass = ['03', '05', '07', '16'].includes(proj.num) ? 'det-hero is-vertical' : 'det-hero';
   const heroHTML = proj.hero
     ? `<div class="${heroClass}"><img src="${proj.hero}" class="det-hero-img" alt="${proj.name}" onerror="this.parentNode.innerHTML='<div class=det-hero-placeholder>${proj.heroEmoji}</div>'"/></div>`
     : `<div class="${heroClass}"><div class="det-hero-placeholder">${proj.heroEmoji}</div></div>`;
