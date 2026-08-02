@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gustavo el Alien</title>
+  <style>
+    :root { color-scheme: dark; --bg: #070b16; --text: #f6f2ea; --accent: #39ff14; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #11213f, var(--bg));
+      color: var(--text);
+    }
+    .game-card {
+      width: min(100%, 760px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 24px;
+      padding: 1rem;
+      background: rgba(9, 14, 24, .78);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 44px rgba(0,0,0,.35);
+    }
+    .game-head { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:.8rem; flex-wrap:wrap; }
+    .game-head h1 { margin:0; font-size:1.2rem; letter-spacing:.12em; text-transform:uppercase; }
+    .game-head .score { font-family:"DM Mono", monospace; font-size:.95rem; color:var(--accent); }
+    canvas { width:100%; height:auto; display:block; border-radius:18px; background:linear-gradient(180deg, #0f1d34, #050814); border:1px solid rgba(255,255,255,.1); }
+    .hint { margin-top:.85rem; font-size:.92rem; color:rgba(255,255,255,.75); }
+    button { border:0; border-radius:999px; padding:.6rem 1rem; background:var(--accent); color:#07110a; font-weight:700; cursor:pointer; margin-top:.8rem; }
+  </style>
+</head>
+<body>
+  <div class="game-card">
+    <div class="game-head">
+      <h1>Gustavo el Alien</h1>
+      <div class="score" id="score">Puntuación: 0</div>
+    </div>
+    <canvas id="game" width="720" height="420"></canvas>
+    <div class="hint">Mueve a Gustavo con las flechas o WASD. Recoge estrellas y evita los meteoritos.</div>
+    <button id="restart">Reiniciar juego</button>
+  </div>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const restartBtn = document.getElementById('restart');
+    let player = { x: 120, y: 180, size: 30, speed: 4 };
+    let stars = [];
+    let meteors = [];
+    let keys = {};
+    let score = 0;
+    let running = true;
+    let frame = 0;
+    function resetGame() { player = { x: 120, y: 180, size: 30, speed: 4 }; stars = []; meteors = []; score = 0; running = true; frame = 0; updateScore(); for (let i = 0; i < 6; i++) spawnStar(); for (let i = 0; i < 4; i++) spawnMeteor(); }
+    function updateScore() { scoreEl.textContent = `Puntuación: ${score}`; }
+    function spawnStar() { stars.push({ x: Math.random() * (canvas.width - 30), y: Math.random() * (canvas.height - 30), r: 6 }); }
+    function spawnMeteor() { meteors.push({ x: Math.random() * canvas.width, y: -20, r: 10 + Math.random() * 8, speed: 2 + Math.random() * 2.5 }); }
+    function drawPlayer() { ctx.save(); ctx.translate(player.x, player.y); ctx.fillStyle = '#8BFF55'; ctx.beginPath(); ctx.arc(0, 0, player.size, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0d1422'; ctx.beginPath(); ctx.arc(-8, -6, 4, 0, Math.PI * 2); ctx.arc(8, -6, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-8, -6, 1.8, 0, Math.PI * 2); ctx.arc(8, -6, 1.8, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-10, -18); ctx.lineTo(-14, -28); ctx.moveTo(10, -18); ctx.lineTo(14, -28); ctx.stroke(); ctx.restore(); }
+    function drawStars() { ctx.fillStyle = '#ffd166'; stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill(); }); }
+    function drawMeteors() { ctx.fillStyle = '#ff5d5d'; meteors.forEach(m => { ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2); ctx.fill(); }); }
+    function update() { if (!running) return; frame++; if (keys['ArrowLeft'] || keys['a']) player.x -= player.speed; if (keys['ArrowRight'] || keys['d']) player.x += player.speed; if (keys['ArrowUp'] || keys['w']) player.y -= player.speed; if (keys['ArrowDown'] || keys['s']) player.y += player.speed; player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x)); player.y = Math.max(player.size, Math.min(canvas.height - player.size, player.y)); stars = stars.filter(star => { const dx = player.x - star.x; const dy = player.y - star.y; const dist = Math.hypot(dx, dy); if (dist < player.size + star.r) { score += 10; updateScore(); return false; } return true; }); while (stars.length < 6) spawnStar(); meteors.forEach(m => { m.y += m.speed; const dx = player.x - m.x; const dy = player.y - m.y; if (Math.hypot(dx, dy) < player.size + m.r) running = false; }); meteors = meteors.filter(m => m.y < canvas.height + 20); if (frame % 70 === 0) spawnMeteor(); }
+    function draw() { ctx.clearRect(0, 0, canvas.width, canvas.height); const grd = ctx.createLinearGradient(0, 0, 0, canvas.height); grd.addColorStop(0, '#111d34'); grd.addColorStop(1, '#060811'); ctx.fillStyle = grd; ctx.fillRect(0, 0, canvas.width, canvas.height); drawStars(); drawMeteors(); drawPlayer(); if (!running) { ctx.fillStyle = 'rgba(0,0,0,.65)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#fff'; ctx.font = 'bold 28px sans-serif'; ctx.fillText('¡Juego terminado!', 220, 170); ctx.font = '16px sans-serif'; ctx.fillText('Pulsa reiniciar para volver a jugar', 220, 205); } }
+    function loop() { update(); draw(); requestAnimationFrame(loop); }
+    window.addEventListener('keydown', e => { keys[e.key] = true; if (e.key === ' ') e.preventDefault(); });
+    window.addEventListener('keyup', e => { keys[e.key] = false; });
+    restartBtn.addEventListener('click', resetGame);
+    resetGame(); loop();
+  </script>
+</body>
+</html>
