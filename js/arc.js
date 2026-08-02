@@ -398,7 +398,7 @@ const PROJECTS = [
     num: '14',
     name: 'Silla Apilable',
     year: '2025',
-    tags: ['Mobiliario', 'Aluminio', 'Serie'],
+    tags: ['Interacción', 'Mobiliario', 'Serie'],
     tools: ['SolidWorks', 'Extrusión aluminio', 'Anodizado', 'Test EN 16139'],
     desc: 'Silla de uso público apilable hasta 12 unidades. Estructura en aluminio extruido. Certificada EN 16139.',
     process: [
