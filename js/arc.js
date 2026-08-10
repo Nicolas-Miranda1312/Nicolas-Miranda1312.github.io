@@ -54,7 +54,7 @@ const PROJECTS = [
   },
   {
     num: '02',
-    name: 'Objeto Utilitario',
+    name: 'Cajon Ensamble',
     year: '2024',
     tags: ['Cerámica', 'Torno'],
     tools: ['Torno de alfarero', 'Horno gas 1280°C', 'Esmaltes naturales'],
@@ -81,7 +81,7 @@ const PROJECTS = [
   },
   {
     num: '03',
-    name: 'Módulo Cero',
+    name: 'LAMPARA EXA',
     year: '2023',
     tags: ['Sistemas', 'Acero', 'Láser'],
     tools: ['SolidWorks', 'Corte láser', 'TIG Welding', 'Anodizado'],
@@ -109,7 +109,7 @@ const PROJECTS = [
   },
   {
     num: '04',
-    name: 'Silla Tubo',
+    name: 'Molde Espiral',
     year: '2023',
     tags: ['Mobiliario', 'Acero', 'Doblado'],
     tools: ['Dobladoras CNC', 'AutoCAD', 'MIG Welding', 'Pintura electrostática'],
@@ -136,7 +136,7 @@ const PROJECTS = [
   },
   {
     num: '05',
-    name: 'Sistema Visual',
+    name: '0atao',
     year: '2023',
     tags: ['Identidad', 'Packaging'],
     tools: ['Illustrator', 'InDesign', 'Impresión offset', 'Foil cobre'],
@@ -163,7 +163,7 @@ const PROJECTS = [
   },
   {
     num: '06',
-    name: 'Tejido Técnico',
+    name: 'Auto-Lab',
     year: '2022',
     tags: ['Textil', 'Producto', 'Bio'],
     tools: ['Telar semi-industrial', 'Adobe Color', 'Tinturas naturales', 'CAD'],
@@ -190,7 +190,7 @@ const PROJECTS = [
   },
   {
     num: '07',
-    name: 'Luminaria Piel',
+    name: 'Gustavo Lita',
     year: '2022',
     tags: ['Iluminación', 'Cuero', 'Artesanal'],
     tools: ['Sketchbook Pro', 'Láser cuero', 'LED 2700K', 'Costura manual'],
