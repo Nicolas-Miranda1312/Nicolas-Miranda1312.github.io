@@ -136,7 +136,7 @@ const PROJECTS = [
   },
   {
     num: '05',
-    name: '0atao',
+    name: '0-atao',
     year: '2023',
     tags: ['Identidad', 'Packaging'],
     tools: ['Illustrator', 'InDesign', 'Impresión offset', 'Foil cobre'],
