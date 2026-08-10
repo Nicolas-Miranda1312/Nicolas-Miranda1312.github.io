@@ -10,7 +10,7 @@
 const PROJECTS = [
   {
     num: '01',
-    name: 'Mesa Estructura',
+    name: 'Agape Amarillo',
     year: '2024',
     tags: ['Mobiliario', 'Madera', 'CNC'],
     tools: ['Rhinoceros 3D', 'Grasshopper', 'CNC Router', 'Aceite de tung'],
@@ -219,7 +219,7 @@ const PROJECTS = [
   },
   {
     num: '08',
-    name: 'Kit Emergencia',
+    name: 'Pictura',
     year: '2022',
     tags: ['Producto', 'Diseño Social', 'ABS'],
     tools: ['Fusion 360', 'Inyección plástica', 'Serigrafía', 'User testing'],
@@ -277,7 +277,7 @@ const PROJECTS = [
   },
   {
     num: '10',
-    name: 'Mochila Modular',
+    name: 'T3',
     year: '2021',
     tags: ['Accesorios', 'Cordura', 'Sistemas'],
     tools: ['CLO 3D', 'Costura industrial', 'Laser', 'Broches YKK'],
@@ -367,7 +367,7 @@ const PROJECTS = [
   },
   {
     num: '13',
-    name: 'Envase Bioplástico',
+    name: 'CORKUP',
     year: '2025',
     tags: ['Packaging', 'Bioplástico', 'Bio'],
     tools: ['Fusion 360', 'Termoformado', 'Bioplástico PLA', 'Serigrafía vegetal'],
