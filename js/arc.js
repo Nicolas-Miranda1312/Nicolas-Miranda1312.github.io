@@ -248,7 +248,7 @@ const PROJECTS = [
   },
   {
     num: '09',
-    name: 'Estante Orgánico',
+    name: 'BEDRACK',
     year: '2021',
     tags: ['Mobiliario', 'Madera', 'Paramétrico'],
     tools: ['Rhino + Grasshopper', 'Torno CNC', 'Laca natural', 'Fotografía'],
@@ -306,7 +306,7 @@ const PROJECTS = [
   },
   {
     num: '11',
-    name: 'Señalética Táctil',
+    name: 'PORTACARGAS',
     year: '2021',
     tags: ['Inclusivo', 'Sistemas', 'Bronce'],
     tools: ['AutoCAD', 'Fundición bronce', 'Braille encoding', 'Instalación'],
@@ -336,7 +336,7 @@ const PROJECTS = [
   },
   {
     num: '12',
-    name: 'Banca Compuesta',
+    name: 'LOCKER CELULAR',
     year: '2025',
     tags: ['Urbano', 'Compuesto', 'Paramétrico'],
     tools: ['Rhino', 'Fabricación CNC', 'Resina epoxi', 'Fibra carbono'],
@@ -396,7 +396,7 @@ const PROJECTS = [
   },
   {
     num: '14',
-    name: 'Silla Apilable',
+    name: 'La Caja',
     year: '2025',
     tags: ['Interacción', 'Mobiliario', 'Serie'],
     tools: ['SolidWorks', 'Extrusión aluminio', 'Anodizado', 'Test EN 16139'],
@@ -425,7 +425,7 @@ const PROJECTS = [
   },
   {
     num: '15',
-    name: 'Reloj de Pared',
+    name: 'Biofonia',
     year: '2026',
     tags: ['Producto', 'Latón', 'Artesanal'],
     tools: ['Rhino', 'Torno manual', 'Latón', 'Mecanismo Miyota'],
@@ -443,7 +443,7 @@ const PROJECTS = [
   },
   {
     num: '16',
-    name: 'Interfaz Táctil',
+    name: 'aaaa',
     year: '2026',
     tags: ['Interacción', 'Experiencia', 'Pantalla'],
     tools: ['Figma', 'Prototipado', 'Arduino', 'Sensores'],
