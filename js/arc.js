@@ -443,7 +443,7 @@ const PROJECTS = [
   },
   {
     num: '16',
-    name: 'aaaa',
+    name: 'SUEÑOS',
     year: '2026',
     tags: ['Interacción', 'Experiencia', 'Pantalla'],
     tools: ['Figma', 'Prototipado', 'Arduino', 'Sensores'],
