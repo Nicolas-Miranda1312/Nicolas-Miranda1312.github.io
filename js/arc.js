@@ -202,10 +202,10 @@ const PROJECTS = [
       { t: 'Montaje',   d: 'Sistema de costura manual visible como detalle.' },
     ],
     cover: 'proyecto-07/01.jpg',
-    hero: 'proyecto-07/2.jpg',
+    hero: 'proyecto-07/02.jpg',
     gallery: [
       'proyecto-07/01.jpg',
-      'proyecto-07/2.jpg',
+      'proyecto-07/02.jpg',
       'proyecto-07/03.jpg',
       'proyecto-07/04.jpg',
       'proyecto-07/05.jpg',
