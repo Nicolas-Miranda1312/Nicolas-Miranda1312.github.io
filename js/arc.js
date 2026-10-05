@@ -447,7 +447,7 @@ const PROJECTS = [
     num: '16',
     name: 'SUEÑOS',
     year: '2025',
-    tags: ['Poespía', 'Arduino', 'Pantalla OLED'],
+    tags: ['Poesía', 'Arduino', 'Pantalla OLED'],
     tools: ['Arduino', 'Pantalla OLED', 'Potenciómetro', 'Illustrator'],
     desc: 'Experiencia visual que explora cómo la tecnología puede acompañar y transformar la forma en que interactuamos con la poesía. Una pantalla OLED actúa como transmisor de fotogramas donde los versos del poema aparecen en movimiento, como un video que guía la lectura. Al girar un potenciómetro, los fotogramas avanzan de forma ascendente y continua, creando la ilusión de movimiento.',
     process: [
