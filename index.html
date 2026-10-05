@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body { overflow-x: hidden; min-height: 100svh; }
-    canvas { position: fixed; inset: 0; z-index: 0; display: block; }
     .home-shell {
       position: relative;
       z-index: 2;
@@ -128,74 +127,22 @@
     </section>
   </div>
 
-  <canvas id="c"></canvas>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <script>
-    const SPACING = 20;
-    let cols, rows, t = 0, mx, my;
     const titleEl = document.querySelector('.home-title');
 
     function updateTitleScroll() {
       const scrolled = window.scrollY || window.pageYOffset;
-      const hintEl = document.querySelector('.scroll-hint');
       if (scrolled > 80) {
         titleEl.classList.add('is-scrolled');
-        hintEl.style.opacity = '0';
       } else {
         titleEl.classList.remove('is-scrolled');
-        hintEl.style.opacity = '1';
       }
     }
 
     window.addEventListener('scroll', updateTitleScroll, { passive: true });
     window.addEventListener('load', updateTitleScroll);
-    function setup() {
-      createCanvas(windowWidth, windowHeight);
-      noStroke();
-      mx = width / 2; my = height / 2;
-      cols = floor(width / SPACING) + 2;
-      rows = floor(height / SPACING) + 2;
-    }
-    function draw() {
-      const isDark = document.documentElement.classList.contains('dark');
-      background(isDark ? 0 : 255, isDark ? 0 : 255, isDark ? 0 : 255);
-      t += 0.016;
-      mx = lerp(mx, mouseX, 0.08);
-      my = lerp(my, mouseY, 0.08);
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          let x = i * SPACING, y = j * SPACING;
-          let dx = x - mx, dy = y - my;
-          let d  = sqrt(dx*dx + dy*dy);
-          let wave = sin(x*.022 + t*1.1)*18 + cos(y*.022 - t*.85)*18 + sin((x-y)*.015 + t*.6)*10;
-          let inf = constrain(1 - d/180, 0, 1); inf = inf*inf;
-          let angle = atan2(dy, dx), push = inf*35;
-          let px = x + cos(angle)*push;
-          let py = y + wave*.7 + sin(angle)*push;
-          let wn = map(sin(x*.022 + t*1.1 + j*.3), -1, 1, 0, 1);
-          let base = map(wn, 0, 1, 160, 30);
-          let bright = min(base - inf*30, 220);
-          let sz = map(inf, 0, 1, 1.5, 5.5);
-          if (inf > 0.05) {
-            fill(isDark ? 220 : bright, isDark ? 215 : bright, isDark ? 210 : bright, inf*22);
-            ellipse(px, py, sz*3.5, sz*3.5);
-          }
-          fill(isDark ? 220 : bright, isDark ? 215 : bright, isDark ? 210 : bright, map(wn,0,1,80,200));
-          ellipse(px, py, sz, sz);
-          if (inf > 0.4) {
-            fill(isDark ? 240 : 10, isDark ? 235 : 10, isDark ? 227 : 10, 255);
-            ellipse(px, py, sz*.45, sz*.45);
-          }
-        }
-      }
-    }
-    function windowResized() {
-      resizeCanvas(windowWidth, windowHeight);
-      cols = floor(width/SPACING)+2;
-      rows = floor(height/SPACING)+2;
-    }
   </script>
+  <script src="js/background.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/theme.js"></script>
 </body>

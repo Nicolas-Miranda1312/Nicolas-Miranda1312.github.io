@@ -15,7 +15,7 @@
       position: fixed; inset: 0;
       display: flex; flex-direction: column;
       align-items: center;
-      background: var(--bg);
+      background: transparent;
       transition: background .4s;
     }
 
@@ -95,7 +95,7 @@
     /* ── DETALLE ── */
     #detail {
       position: fixed; inset: 0; z-index: 600;
-      background: var(--bg); overflow-y: auto;
+      background: color-mix(in srgb, var(--bg) 92%, transparent); overflow-y: auto;
       opacity: 0; transform: translateY(32px);
       pointer-events: none;
       transition: opacity .45s cubic-bezier(.25,.46,.45,.94),
@@ -549,6 +549,7 @@
 
   <!-- DARK TOGGLE FIJO -->
 
+  <script src="js/background.js"></script>
   <script src="js/arc.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/theme.js"></script>
