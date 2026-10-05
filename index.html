@@ -88,9 +88,16 @@
       background: #050814;
     }
     @media (max-width: 768px) {
+      .home-title {
+        top: clamp(7rem, 18vh, 10rem);
+        transform: translateX(-50%);
+      }
       .home-shell { padding-top: 6rem; }
       .game-section { margin-top: 24vh; padding: 1.2rem 1rem 1rem; }
       .game-section iframe { min-height: 450px; }
+    }
+    @media (max-width: 480px) {
+      .home-title { top: clamp(6.25rem, 17vh, 8rem); }
     }
   </style>
 </head>
@@ -111,11 +118,6 @@
   <div id="cursor"><div class="c-ring"></div><div class="c-dot"></div></div>
 
   <div class="home-title">NAKU</div>
-
-  <div class="scroll-hint" aria-hidden="true">
-    <span>↓</span>
-    <div>Scroll</div>
-  </div>
 
   <div class="home-shell">
     <section class="game-section">
