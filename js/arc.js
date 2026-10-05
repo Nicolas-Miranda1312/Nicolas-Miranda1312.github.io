@@ -12,14 +12,14 @@ const PROJECTS = [
     num: '01',
     name: 'Agape Amarillo',
     year: '2024',
-    tags: ['Mobiliario', 'Madera', 'CNC'],
-    tools: ['Rhinoceros 3D', 'Grasshopper', 'CNC Router', 'Aceite de tung'],
-    desc: 'Sistema modular de apoyo en madera recuperada y acero laminado en frío. Geometría paramétrica tensada con la veta natural del material.',
+    tags: ['Taller Celebración', 'Madera', 'Corte láser'],
+    tools: ['Rhinoceros 3D', 'Ingleteadora', 'Corte láser', 'Taladro'],
+    desc: 'Sistema modular de listones de madera y papel, diseñado para funcionar en dos ocasiones distintas. El amarillo ilumina el sendero y genera un quiebre entre los tonos neutros del entorno. Presentado en Diseño Abierto UDP 2024.',
     process: [
-      { t: 'Investigación', d: 'Estudio de ensambles japoneses adaptados a producción semi-industrial.' },
-      { t: 'Prototipado',   d: '3 iteraciones en MDF. Test de carga con 180 kg.' },
-      { t: 'Fabricación',   d: 'CNC de precisión ±0.1mm, acabado con aceite de tung en 3 capas.' },
-      { t: 'Serie',         d: 'Edición limitada de 12 unidades por lote.' },
+      { t: 'Observación', d: 'Estudio del amarillo en la ciudad oscura y sus tres tipos de quiebre: funcional, para resaltar y luminoso.' },
+      { t: 'Concepto',   d: 'Quiebre vibrante. Verbo: revelar. Gesto: "desenvolver para revelar el quiebre entre tonos".' },
+      { t: 'Propuesta',   d: 'Módulos que forman una conexión lineal y deslumbran el camino. Se transforman fácilmente entre las dos configuraciones.' },
+      { t: 'Materiales',   d: 'Listones de madera 2×2, tarugos de 10 mm × 91 cm, tela bistrech, tornillos de 3½" y perno coche con tuerca de ¼" × 4".' },
     ],
     /* ── IMÁGENES ──────────────────────────────────────────────
        cover:   imagen que aparece en la tarjeta del arco
