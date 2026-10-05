@@ -723,7 +723,7 @@ function resetListLayout() {
 
   cardEls.forEach((card, i) => {
     card.style.position = 'absolute';
-    card.style.top = mobile ? `${baseY}px` : '50%';
+    card.style.top = mobile ? `${baseY}px` : '46%';
     card.style.transform = mobile ? 'none' : 'translateY(-50%)';
     card.style.left = `${baseX + i * step}px`;
     card.style.display = '';
