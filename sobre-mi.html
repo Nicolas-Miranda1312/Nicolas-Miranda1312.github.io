@@ -50,27 +50,68 @@
     /* SKILLS */
     .skills-block { margin: 2.5rem 0; }
     .skills-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.75rem 3.5rem;
     }
-    .skill-row {
-      background: var(--bg); padding: .85rem 1.1rem;
-      display: flex; justify-content: space-between; align-items: center;
-      transition: background .2s;
+    .skill-category { min-width: 0; }
+    .skill-category-title {
+      margin-bottom: 1.1rem;
+      color: var(--fg3);
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      font-weight: 400;
+      letter-spacing: .22em;
+      text-transform: lowercase;
     }
-    .skill-row:hover { background: var(--card-bg); }
+    .skill-row { padding: .75rem 0 .65rem; }
+    .skill-row-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: .75rem;
+    }
     .skill-name {
       font-family: var(--font-display); font-size: .9rem; font-weight: 500;
       color: var(--fg);
     }
-    .skill-dots { display: flex; gap: 3px; }
-    .skill-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--border);
-      transition: background .3s;
+    .skill-level {
+      flex-shrink: 0;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      letter-spacing: .16em;
+      text-transform: lowercase;
     }
-    .skill-dot.on { background: var(--accent); }
+    .skill-points {
+      display: flex;
+      gap: .3rem;
+      margin-top: .55rem;
+    }
+    .skill-point {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+    .skill-point.is-on {
+      background: var(--accent);
+      box-shadow: 0 0 7px color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+    .skill-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+      padding-top: .15rem;
+    }
+    .skill-tool {
+      padding: .48rem .85rem;
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .14em;
+    }
 
     /* EXPERIENCIA */
     .exp-list { margin-bottom: 3rem; }
@@ -112,10 +153,11 @@
     @media (max-width: 900px) {
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-photo { position: static; width: 180px; aspect-ratio: 1; border-radius: 50%; }
-      .skills-grid { grid-template-columns: 1fr; }
+      .skills-grid { gap: 2rem; }
     }
     @media (max-width: 600px) {
       .exp-item { grid-template-columns: 1fr; gap: .4rem; }
+      .skills-grid { grid-template-columns: 1fr; gap: 1.75rem; }
     }
   </style>
 </head>
@@ -168,48 +210,74 @@
         <div class="skills-block reveal">
           <div class="sec-rule">Habilidades</div>
           <div class="skills-grid">
-            <div class="skill-row">
-              <span class="skill-name">Diseño de producto</span>
-              <div class="skill-dots">
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
+            <section class="skill-category" aria-labelledby="skills-design">
+              <h3 class="skill-category-title" id="skills-design">Software de diseño</h3>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Adobe Illustrator</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="Adobe Illustrator: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
               </div>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">Modelado 3D</span>
-              <div class="skill-dots">
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">After Effects</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="After Effects: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
               </div>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">Fabricación CNC</span>
-              <div class="skill-dots">
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
-                <div class="skill-dot on"></div><div class="skill-dot"></div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Adobe Photoshop</span><span class="skill-level">Básico</span></div>
+                <div class="skill-points" role="img" aria-label="Adobe Photoshop: básico, 2 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span><span class="skill-point"></span></div>
               </div>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">Prototipado</span>
-              <div class="skill-dots">
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Figma</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="Figma: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
               </div>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">Soldadura MIG/TIG</span>
-              <div class="skill-dots">
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
-                <div class="skill-dot on"></div><div class="skill-dot"></div>
+            </section>
+
+            <section class="skill-category" aria-labelledby="skills-code">
+              <h3 class="skill-category-title" id="skills-code">Código e interacción</h3>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Arduino IDE</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="Arduino IDE: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
               </div>
-            </div>
-            <div class="skill-row">
-              <span class="skill-name">Programación</span>
-              <div class="skill-dots">
-                <div class="skill-dot on"></div><div class="skill-dot on"></div>
-                <div class="skill-dot"></div><div class="skill-dot"></div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">p5.js</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="p5.js: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
               </div>
-            </div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">KiCad</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="KiCad: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Visual Studio Code</span><span class="skill-level">Básico</span></div>
+                <div class="skill-points" role="img" aria-label="Visual Studio Code: básico, 2 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span><span class="skill-point"></span></div>
+              </div>
+            </section>
+
+            <section class="skill-category" aria-labelledby="skills-modeling">
+              <h3 class="skill-category-title" id="skills-modeling">Modelado y fabricación</h3>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Rhinoceros</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="Rhinoceros: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Autodesk Inventor</span><span class="skill-level">Avanzado</span></div>
+                <div class="skill-points" role="img" aria-label="Autodesk Inventor: avanzado, 4 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">Fusion 360</span><span class="skill-level">Avanzado</span></div>
+                <div class="skill-points" role="img" aria-label="Fusion 360: avanzado, 4 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span></div>
+              </div>
+              <div class="skill-row">
+                <div class="skill-row-head"><span class="skill-name">AutoCAD</span><span class="skill-level">Intermedio</span></div>
+                <div class="skill-points" role="img" aria-label="AutoCAD: intermedio, 3 de 4 puntos"><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point is-on"></span><span class="skill-point"></span></div>
+              </div>
+            </section>
+
+            <section class="skill-category" aria-labelledby="skills-other">
+              <h3 class="skill-category-title" id="skills-other">Otras herramientas</h3>
+              <div class="skill-tools" aria-label="Otras herramientas">
+                <span class="skill-tool">GitHub</span>
+                <span class="skill-tool">Adafruit IO</span>
+                <span class="skill-tool">HTML · CSS · JS</span>
+              </div>
+            </section>
           </div>
         </div>
 
