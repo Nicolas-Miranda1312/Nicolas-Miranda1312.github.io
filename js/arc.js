@@ -5,6 +5,9 @@
    2. Guarda la imagen de portada en: assets/images/proyecto-XX-cover.jpg
    3. Guarda imágenes de galería en:  assets/images/proyecto-XX-01.jpg, etc.
    4. El arco se recalcula solo — no necesitas cambiar nada más.
+  TEXTOS DE CADA PROYECTO (edita el objeto correspondiente en PROJECTS):
+  name = título · year = año · tags = etiquetas · desc = descripción
+  tools = herramientas · process = etapas y textos del proceso
    ───────────────────────────────────────────────── */
 
 const PROJECTS = [
@@ -56,14 +59,13 @@ const PROJECTS = [
     num: '02',
     name: 'Cajon Ensamble',
     year: '2024',
-    tags: ['Cerámica', 'Torno'],
-    tools: ['Torno de alfarero', 'Horno gas 1280°C', 'Esmaltes naturales'],
-    desc: 'Serie de piezas domésticas que preservan la huella táctil del proceso artesanal como evidencia del tiempo.',
+    tags: ['Máquinas y Procesos', 'Mobiliario', 'Madera', 'Perfil Metálico'],
+    tools: ['Sierra', 'Fresadora', 'Lijadora', 'Soldadura'],
+    desc: 'Velador diseñado a partir de un sistema de encajes, fabricado en pino cepillado. El cajón une sus partes sin tornillos. Su estructura se complementa con un soporte de perfil metálico soldado y pintado en tono burdeo.',
     process: [
-      { t: 'Concepto',   d: 'La imperfección como valor de producción intencional.' },
-      { t: 'Material',   d: 'Arcilla chamotada. Temperatura: 1280°C.' },
-      { t: 'Esmalte',    d: 'Formulación propia con ceniza volcánica local.' },
-      { t: 'Edición',    d: '30 piezas numeradas y documentadas.' },
+      { t: 'Diseño',   d: 'Pruebas de encajes en un marco de madera.' },
+      { t: 'Fabricación',   d: 'Técnicas de corte y ensamblaje.' },
+      { t: 'Terminación',    d: 'Pieza lijada y sellada con cera de abeja. Soporte soldado y pintado con spray color burdeo.' },
     ],
     cover: 'proyecto-02/01.jpg',
     hero: 'proyecto-02/02.jpg',
@@ -82,15 +84,15 @@ const PROJECTS = [
   {
     num: '03',
     name: 'LAMPARA EXA',
-    year: '2023',
-    tags: ['Sistemas', 'Acero', 'Láser'],
-    tools: ['SolidWorks', 'Corte láser', 'TIG Welding', 'Anodizado'],
-    desc: 'Sistema estructural ensamblable sin herramientas. 12 tipologías de nodo generan +200 configuraciones posibles.',
+    year: '2024',
+    tags: ['Iluminación', 'Acero', 'Corte Láser'],
+    tools: ['Inventor', 'Corte láser', 'Plegado', 'Modelado 3D'],
+    desc: 'Luminario creado a partir de una plancha de acero carbón de 2 mm de espesor, cortada con precisión en láser y plegada para dar forma a una pieza única. Su diseño explora cómo la geometría y la técnica industrial pueden transformarse en un objeto que dialoga con la luz y el espacio, proyectando sombras y reflejos que enriquecen el ambiente.',
     process: [
-      { t: 'Sistema',    d: 'Tolerancias ±0.3mm para ensamble manual fluido.' },
-      { t: 'Material',   d: 'Acero laminado 2mm. Anodizado negro mate.' },
-      { t: 'Prueba',     d: 'Instalación piloto en Matucana 100, Santiago.' },
-      { t: 'Variantes',  d: 'Powder coat en 6 colores estándar.' },
+      { t: 'Modelado',    d: 'Pieza modelada en Inventor - Sheet Metal.' },
+      { t: 'Planos',   d: 'Planos de la pieza para el corte láser de la plancha de acero carbón de 2 mm.' },
+      { t: 'Plegado',     d: 'Plegado de la plancha para dar forma al luminario.' },
+      { t: 'Resultado',  d: 'Una fusión entre materialidad, precisión y estética, con sombras y reflejos que enriquecen el espacio.' },
     ],
     cover: 'proyecto-03/01.jpg',
     hero: 'proyecto-03/02.jpg',
@@ -111,14 +113,14 @@ const PROJECTS = [
     num: '04',
     name: 'Molde Espiral',
     year: '2023',
-    tags: ['Mobiliario', 'Acero', 'Doblado'],
-    tools: ['Dobladoras CNC', 'AutoCAD', 'MIG Welding', 'Pintura electrostática'],
-    desc: 'Un único tubo de acero 22mm doblado en frío genera asiento, respaldo y estructura en recorrido continuo.',
+    tags: ['Moldaje', 'Impresión 3D', 'Diseño Industrial'],
+    tools: ['Impresora 3D', 'AutoCAD', 'Rhinoceros', 'Moldaje modular'],
+    desc: 'Ejercicio de exploración en moldajes y producción. Se diseñó un molde modular en impresión 3D, compuesto por 3 partes, que permite fabricar maceteros en serie manteniendo siempre la misma calidad y detalle.',
     process: [
-      { t: 'Geometría',  d: 'Simulación digital de pliegues antes del primer doble.' },
-      { t: 'Ergonomía',  d: 'Test con 24 usuarios. Ajuste de ángulo de respaldo.' },
-      { t: 'Producción', d: 'Fabricable en taller pequeño. 45 min/unidad.' },
-      { t: 'Acabado',    d: 'Pintura electrostática en 8 colores.' },
+      { t: 'Diseño',  d: 'Forma en espiral pensada para jugar con la luz y la sombra.' },
+      { t: 'Modelado',  d: 'Modelado del molde modular de 3 partes.' },
+      { t: 'Impresión', d: 'Impresión 3D de cada parte del molde.' },
+      { t: 'Resultado',    d: 'Maceteros fabricados en serie, con la misma calidad y detalle en cada unidad.' },
     ],
     cover: 'proyecto-04/01.jpg',
     hero: 'proyecto-04/02.jpg',
