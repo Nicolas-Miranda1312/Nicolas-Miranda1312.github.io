@@ -646,15 +646,29 @@ function makeGenCanvas(proj, w, h) {
 /* Valores responsivos */
 function getArcParams() {
   const w = window.innerWidth;
-  if (w <= 600) return { radius: 200, arcHalf: Math.PI * 1.2 };
-  if (w <= 900) return { radius: 280, arcHalf: Math.PI * 1.45 };
-  return { radius: 590, arcHalf: Math.PI * 1.667 }; 
+  const h = window.innerHeight;
+  if (w <= 600) {
+    const previousRadius = Math.min(200, w * 0.42, h * 0.32);
+    const radius = Math.min(260, w * 0.58, h * 0.42);
+    const bottom = Math.min(320, Math.max(112, h * 0.38)) - (radius - previousRadius);
+    return { radius, arcHalf: Math.PI * 1.2, bottom };
+  }
+  if (w <= 900) return { radius: Math.min(280, w * 0.37, h * 0.48), arcHalf: Math.PI * 1.45 };
+  return { radius: Math.min(590, Math.max(360, h * 0.67)), arcHalf: Math.PI * 1.667 };
   /* radio del arco en escritorio */
 }
-let { radius: ARC_RADIUS, arcHalf: ARC_HALF } = getArcParams();
+const initialArcParams = getArcParams();
+let ARC_RADIUS = initialArcParams.radius;
+let ARC_HALF = initialArcParams.arcHalf;
+if (initialArcParams.bottom !== undefined) arcWrap.style.bottom = `${initialArcParams.bottom}px`;
 window.addEventListener('resize', () => {
-  const p = getArcParams(); ARC_RADIUS = p.radius; ARC_HALF = p.arcHalf;
+  const p = getArcParams();
+  ARC_RADIUS = p.radius;
+  ARC_HALF = p.arcHalf;
+  if (p.bottom !== undefined) arcWrap.style.bottom = `${p.bottom}px`;
+  else arcWrap.style.removeProperty('bottom');
   if (currentFilter !== 'Todas') resetListLayout();
+  positionCards();
 });
 
 let offset = 0;
@@ -684,12 +698,21 @@ function resetListLayout() {
   const cardRect = cardEls[0].getBoundingClientRect();
   const cardWidth = cardRect.width || 300;
   const cardHeight = cardRect.height || 480;
+  const mobile = window.innerWidth <= 600;
   const step = cardWidth + LIST_GAP;
   const total = N * step;
-  const baseX = (window.innerWidth - total) / 2;
+  const baseX = mobile
+    ? (window.innerWidth - cardWidth) / 2 - step
+    : (window.innerWidth - total) / 2;
+  const preferredTop = (window.innerHeight - cardHeight) / 2 + window.innerHeight * 0.09;
+  const baseY = mobile
+    ? Math.min(window.innerHeight - cardHeight - 20, Math.max(130, preferredTop))
+    : window.innerHeight / 2;
 
   listLayout = {
+    axis: 'horizontal',
     baseX,
+    baseY,
     step,
     totalWidth: total,
     cardWidth,
@@ -699,10 +722,9 @@ function resetListLayout() {
 
   cardEls.forEach((card, i) => {
     card.style.position = 'absolute';
-    card.style.top = '50%';
-    card.style.transform = 'translateY(-50%)';
-    const x = baseX + i * step;
-    card.style.left = `${x}px`;
+    card.style.top = mobile ? `${baseY}px` : '50%';
+    card.style.transform = mobile ? 'none' : 'translateY(-50%)';
+    card.style.left = `${baseX + i * step}px`;
     card.style.display = '';
   });
 }
@@ -750,13 +772,12 @@ function positionListCards() {
   if (listOffset >= listLayout.totalWidth) listOffset -= listLayout.totalWidth;
   if (listOffset < 0) listOffset += listLayout.totalWidth;
 
-  const screenW = window.innerWidth;
   const total = listLayout.totalWidth;
 
+  const screenW = window.innerWidth;
+
   cardEls.forEach((card, i) => {
-    let x = listLayout.baseX + i * listLayout.step + listOffset;
-    while (x > screenW) x -= total;
-    while (x < -listLayout.cardWidth) x += total;
+    const x = listLayout.baseX + ((i * listLayout.step + listOffset) % total);
     card.style.left = `${x}px`;
     card.style.display = '';
     card.classList.remove('is-center');

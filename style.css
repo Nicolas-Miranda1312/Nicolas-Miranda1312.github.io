@@ -163,7 +163,7 @@ html.dark .nav-pill .np-toggle .knob {
   transform: translate(-50%, -50%);
   z-index: 850;
   font-family: var(--font-jersey);
-  font-size: clamp(23.5rem, 35vw, 30rem);
+  font-size: clamp(4.5rem, 28vw, 30rem);
   line-height: 0.9;
   max-width: 92vw;
   font-weight: 400;
@@ -178,14 +178,12 @@ html.dark .nav-pill .np-toggle .knob {
 @media (max-width: 768px) {
   .home-title {
     top: 46%;
-    font-size: clamp(5.5rem, 22vw, 10rem);
   }
 }
 
 @media (max-width: 480px) {
   .home-title {
     top: 44%;
-    font-size: clamp(4.5rem, 24vw, 8.5rem);
   }
 }
 
@@ -314,4 +312,28 @@ footer {
   .nav-left .nav-link:not(:first-child) { display: none; }
   .page { padding-left: 1.25rem; padding-right: 1.25rem; }
   footer { flex-direction: column; gap: .4rem; text-align: center; }
+}
+
+@media (max-width: 600px) {
+  .nav-pill {
+    max-width: calc(100vw - 1rem);
+  }
+  .nav-pill a {
+    padding: .42rem .45rem;
+    font-size: .55rem;
+    letter-spacing: .08em;
+  }
+  .nav-pill .np-sep { padding: 0; }
+  .nav-pill .np-toggle {
+    width: 36px;
+    margin-left: .2rem;
+  }
+  .nav-pill .np-toggle .knob { width: 16px; height: 16px; }
+  html.dark .nav-pill .np-toggle .knob { transform: translateX(14px); }
+}
+
+@media (max-width: 360px) {
+  .nav-pill a { padding-inline: .32rem; font-size: .51rem; }
+  .nav-pill .np-sep { display: none; }
+  .nav-pill .np-toggle { margin-left: .1rem; }
 }
