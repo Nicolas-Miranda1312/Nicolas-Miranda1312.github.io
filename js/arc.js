@@ -676,11 +676,12 @@ const BASE_SPEED = 0.0010;
 let speed = BASE_SPEED, targetSpeed = BASE_SPEED;
 let wheelTimer;
 
-const BASE_LIST_SPEED = 0.100; // px por frame para categorías
+const BASE_LIST_SPEED = 0.150; // px por frame para categorías, en todos los dispositivos
 let listSpeed = BASE_LIST_SPEED;
 let targetListSpeed = BASE_LIST_SPEED;
+const LIST_ACCELERATION = 0.16;
 const SPEED_BOOST = 0.0080;
-const LIST_SPEED_BOOST = 2.4;
+const LIST_SPEED_BOOST = 3.6;
 const LIST_GAP = 40;
 let galleryScrollOffset = 0;
 let galleryScrollSpeed = 0;
@@ -767,7 +768,7 @@ function isPointerOverGallery(clientX, clientY) {
 function positionListCards() {
   if (!cardEls.length || listLayout.totalWidth <= 0) return;
 
-  listSpeed += (targetListSpeed - listSpeed) * 0.08;
+  listSpeed += (targetListSpeed - listSpeed) * LIST_ACCELERATION;
   listOffset += listSpeed;
   if (listOffset >= listLayout.totalWidth) listOffset -= listLayout.totalWidth;
   if (listOffset < 0) listOffset += listLayout.totalWidth;
