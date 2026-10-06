@@ -478,8 +478,8 @@ const PROJECTS = [
    ═══════════════════════ */
 const FILTER_MAP = {
   'Todas': () => true,
-  'Interacción': proj => proj.tags.some(t => /Arduino|Electrónica|Impresión 3D/i.test(t)),
-  'Fabricación Digital': proj => proj.tags.some(t => /Madera|Acero|Impresión 3D|Corte Láser/i.test(t)),
+  'Interacción': proj => proj.tags.some(t => /Arduino|Electrónica|Moldaje/i.test(t)),
+  'Fabricación Digital': proj => proj.tags.some(t => /Acero|Impresión 3D|Corte Láser/i.test(t)),
   'Prototipado': proj => proj.tags.some(t => /cerámica|textil|producto|bioplástico|bio|accesorios|cordura|costura|mecanismo|torno|prototipado|serigrafía|molde|latón|taller/i.test(t)),
   'Objetos funcionales': proj => proj.tags.some(t => /Mobiliario|Corte Láser|Biomaterial|Pictograma|Imanes/i.test(t)),
 };
