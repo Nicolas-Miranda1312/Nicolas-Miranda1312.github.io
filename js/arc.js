@@ -400,7 +400,7 @@ const PROJECTS = [
     num: '14',
     name: 'La Caja',
     year: '2026',
-    tags: ['Sintetizasor', 'Electónica', 'Cartón'],
+    tags: ['Sintetizasor', 'Electrónica', 'Cartón'],
     tools: ['Chip-NE555', 'Chip-CD4017', 'Chip-HEF4093', 'Chip-LM386', 'KiCad' , 'potenciómetros', 'Caja de Cartón'],
     desc: 'Dispositivo electrónico que genera sonido y crea un ritmo secuencial que el usuario puede deformar en tiempo real. Es una exploración del ruido: una pulsación constante que se convierte en punto de intervención directa. Tiene una estética de honestidad industrial, con cables expuestos y perforaciones de geometría de píxel que funcionan como pantalla de luz rítmica interior.',
     process: [
@@ -429,7 +429,7 @@ const PROJECTS = [
     num: '15',
     name: 'Biofonia',
     year: '2026',
-    tags: ['Producto', 'Latón', 'Artesanal'],
+    tags: ['Sintetizasor', 'Electrónica', 'Artesanal'],
     tools: ['Rhino', 'Torno manual', 'Latón', 'Mecanismo Miyota'],
     desc: 'Reloj en latón torneado a mano. Mecanismo japonés de alta precisión. Edición de 20 unidades.',
     process: [
@@ -478,10 +478,10 @@ const PROJECTS = [
    ═══════════════════════ */
 const FILTER_MAP = {
   'Todas': () => true,
-  'Interacción': proj => proj.tags.some(t => /interacción|identidad|packaging|inclusivo|iluminación|iluminac|señalética|visual|experiencia/i.test(t)),
-  'Fabricación Digital': proj => proj.tags.some(t => /cnc|láser|laser|fabricación|producción|madera|acero|paramétrico|corte|resina|extrusión|doblado|aluminio|bronce|fibra carbono|impresión|inyección/i.test(t)),
+  'Interacción': proj => proj.tags.some(t => /Arduino|Electrónica|Impresión 3D/i.test(t)),
+  'Fabricación Digital': proj => proj.tags.some(t => /Madera|Acero|Impresión 3D|Corte Láser/i.test(t)),
   'Prototipado': proj => proj.tags.some(t => /cerámica|textil|producto|bioplástico|bio|accesorios|cordura|costura|mecanismo|torno|prototipado|serigrafía|molde|latón|taller/i.test(t)),
-  'Objetos funcionales': proj => proj.tags.some(t => /cerámica|textil|producto|bioplástico|bio|accesorios|cordura|costura|mecanismo|torno|prototipado|serigrafía|molde|latón|taller/i.test(t)),
+  'Objetos funcionales': proj => proj.tags.some(t => /Mobiliario|Corte Láser|Biomaterial|Pictograma|Imanes/i.test(t)),
 };
 
 let currentFilter = 'Todas';
